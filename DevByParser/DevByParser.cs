@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace DevBy
 {
@@ -64,6 +66,10 @@ namespace DevBy
 
             Console.WriteLine("**********END OF GETTING EVENTS*********");
             return meetings;
+        }
+        public List<EventObject> GetNewEvents(List<EventObject> prevEvents)
+        {
+            return (GetEvents().Except(prevEvents)).ToList();
         }
 
 
