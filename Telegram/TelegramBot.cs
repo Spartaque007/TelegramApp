@@ -13,8 +13,6 @@ namespace Telegram
     {
         private string Token = $@"https://api.telegram.org/{ConfigurationManager.AppSettings.Get("TelegramBotToken")}";
         private HttpClient client = new HttpClient();
-
-
         public string GetMe()
         {
             return client.GetStringAsync($"{Token }/getMe").Result;

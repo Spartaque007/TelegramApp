@@ -12,39 +12,34 @@ using System.Threading.Tasks;
 
 namespace DevBy
 {
-    class DevByParser
+    public class DevByParser
     {
-            string host { get; } = "https://events.dev.by/";
-            HttpClient clientParser = new HttpClient();
-            HtmlDocument doc = new HtmlDocument();
-
-
+        string host { get; } = "https://events.dev.by/";
+        HttpClient clientParser = new HttpClient();
+        HtmlDocument doc = new HtmlDocument();
         public int Pages { get; set; } = int.Parse(ConfigurationManager.AppSettings.Get("Pages") ?? "1");
-            
+        public DevByParser()
+        {
+            clientParser.DefaultRequestHeaders.Add("Accept", "text/html, */*; q=0.01");
+            clientParser.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
 
-            public DevByParser()
+        }
+        string GetResponse(int pages)   //getting respons in HTML format from host
+        {
+            string data = "";
+
+            for (int i = 1; i <= pages; i++)
             {
-                clientParser.DefaultRequestHeaders.Add("Accept", "text/html, */*; q=0.01");
-                clientParser.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
+                data += clientParser.GetStringAsync($"{host}?page={i}").Result;
 
             }
-            string GetResponse(int pages)   //getting respons in HTML format from host
-            {
-                string data = "";
 
-                for (int i = 1; i <= pages; i++)
-                {
-                    data += clientParser.GetStringAsync($"{host}?page={i}").Result;     
-
-                }
-
-                return data;                          
-            }
-           
-            public List<EventObject> GetEvents()
-            {
+            return data;
+        }
+        public List<EventObject> GetEvents()
+        {
             List<EventObject> meetings = new List<EventObject>();
-            doc.LoadHtml(GetResponse(Pages));                  
+            doc.LoadHtml(GetResponse(Pages));
             HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//div[@class='list-item-events list-more']");
 
             foreach (HtmlNode node in nodes)
@@ -62,7 +57,7 @@ namespace DevBy
                     string date = $"{ @Regex.Replace(node.ChildNodes[i].ChildNodes[1].InnerText, @"\s", " ")}";
                     string name = $"{ @Regex.Replace(node.ChildNodes[i].ChildNodes[3].ChildNodes[1].InnerText, @"\s", " ")}";
                     meetings.Add(new EventObject(name, date));
-                    
+
                 }
 
             }
@@ -72,6 +67,6 @@ namespace DevBy
         }
 
 
-        
+
     }
 }

@@ -15,9 +15,7 @@ namespace Telegram
         public string first_name { get; set; }
         public string last_name { get; set; }
         public string username { get; set; }
-
         public override string ToString() => $"Sender ID: {ID}" + $"User name {username}" + (Is_bot ? " is Bot" : " is human");
-       
-
+     
     }
 }
