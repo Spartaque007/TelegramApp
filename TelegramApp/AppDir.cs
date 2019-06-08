@@ -21,20 +21,26 @@ namespace TelegramApp
             if (!Directory.Exists(Dir))
             {
                 Console.WriteLine("Config folder is not found, but I took care of it and created it ");
-                Directory.CreateDirectory(Dir); 
+                Directory.CreateDirectory(Dir);
 
             }
             try
             {
-                File.Open($@"{MeetingsFile}_{username}.json", FileMode.Open, FileAccess.Read, FileShare.None);
-                Console.WriteLine("Directory is OK");
-                return true;
+                using (FileStream fs = File.Open($@"{MeetingsFile}_{username}.json", FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    Console.WriteLine("Directory is OK");
+                    return true;
+                }
             }
             catch (FileNotFoundException)
             {
                 Console.WriteLine($"file is not found, but I created her ");
-                File.Create($@"{ MeetingsFile}_{username}.json");
-                return true;
+
+                using (FileStream fs = File.Create($@"{ MeetingsFile}_{username}.json"))
+                {
+                    return true;
+                }
+
             }
             catch (DirectoryNotFoundException)
             {
@@ -44,13 +50,13 @@ namespace TelegramApp
 
         }
 
-        public static  string GetUsersFile(string username)
+        public static string GetUsersFile(string username)
         {
             if (CheckUsersFile(username))
             {
                 try
                 {
-                    return File.ReadAllText($@"{MeetingsFile}_{username}.json");
+                    return File.ReadAllText($@"{MeetingsFile}_{username}.json") ?? " ";
                 }
                 catch (Exception ex)
                 {
@@ -60,7 +66,9 @@ namespace TelegramApp
             else return "CheckUsersFile is false";
 
         }
-        
+
+
+
 
     }
 }

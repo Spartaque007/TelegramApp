@@ -69,7 +69,7 @@ namespace DevBy
         }
         public List<EventObject> GetNewEvents(List<EventObject> prevEvents)
         {
-            return (GetEvents().Except(prevEvents)).ToList();
+            return (this.GetEvents().Except(prevEvents ?? new List<EventObject>())).ToList();
         }
 
 

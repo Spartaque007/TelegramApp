@@ -19,16 +19,13 @@ namespace TelegramApp
             Console.OutputEncoding = Encoding.UTF8;
             AppDir.CheckPathFile();
             DevByParser devBy = new DevByParser();
-            List<EventObject> newEvents = devBy.GetNewEvents(JsonConvert.DeserializeObject<List<EventObject>>(AppDir.GetUsersFile("")));
+            var prevEvents = JsonConvert.DeserializeObject<List<EventObject>>(AppDir.GetUsersFile(""));
+            List<EventObject> newEvents = devBy.GetNewEvents(prevEvents);
             TelegramBot bot = new TelegramBot();
             TelegramResponse results = JsonConvert.DeserializeObject<TelegramResponse>(bot.GetUpdate());
-            Console.WriteLine("You have new message");
+            bot.GenerateAnswer(results);
 
-            foreach (var item in results.result)
-            {
-                Console.WriteLine($"{item.message.text}");
 
-            }
             Console.ReadKey();
         }
     }

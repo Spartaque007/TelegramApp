@@ -13,6 +13,8 @@ namespace Telegram
 
         private string Token = $@"https://api.telegram.org/{ConfigurationManager.AppSettings.Get("BotToken")}";
         private HttpClient client = new HttpClient();
+        private string myChatID = ConfigurationManager.AppSettings.Get("ChatMy ID");
+        private string GeneralChatId = ConfigurationManager.AppSettings.Get("ChatGeneral ID");
         public string GetMe()
         {
             return client.GetStringAsync($"{Token }/getMe").Result;
@@ -32,14 +34,31 @@ namespace Telegram
         }
         public string SendMessageMe(string message)
         {
-            return client.GetStringAsync($"{Token }/sendMessage?chat_id={ConfigurationManager.AppSettings.Get("ChatMy ID")}&text={message}").Result;
+            return client.GetStringAsync($"{Token }/sendMessage?chat_id={myChatID}&text={message}").Result;
         }
         public string SendMessageGeneral(string message)
         {
 
-            return client.GetStringAsync($"{Token }/sendMessage?chat_id={ConfigurationManager.AppSettings.Get("ChatGeneral ID")}&text={message}").Result;
+            return client.GetStringAsync($"{Token }/sendMessage?chat_id={GeneralChatId}&text={message}").Result;
         }
 
+        public string SendMessageCustom(string message, string chatID)
+        {
+
+            return client.GetStringAsync($"{Token }/sendMessage?chat_id={chatID}&text={message}").Result;
+        }
+
+        public void GenerateAnswer(TelegramResponse response)
+        {
+            if (response.result.Count > 0)
+            {
+                foreach (var resp in response.result)
+                {
+                    SendMessageCustom("we are recieve You message", resp.message.chat.Id.ToString());
+                }
+                
+            }
+        }
 
     }
 }
