@@ -11,64 +11,55 @@ namespace TelegramApp
     public static class AppDir
     {
         public static string Dir { get; } = $@"{ConfigurationManager.AppSettings.Get("DefaultDir") ?? "."}";
-        public static string MeetingsFile { get; } = $@"{ConfigurationManager.AppSettings.Get("DefaultDir") ?? "."}{ConfigurationManager.AppSettings.Get("MeetingFile") ?? "Meetings"}";
-        public static bool CheckPathFile()
-        {
-            return CheckUsersFile("");
-        }
-        public static bool CheckUsersFile(string username)
+        
+        public static bool CheckUsersFolder()
         {
             if (!Directory.Exists(Dir))
             {
                 Console.WriteLine("Config folder is not found, but I took care of it and created it ");
                 Directory.CreateDirectory(Dir);
-
+                return false;
             }
+            else
+            {
+                Console.WriteLine("Directory is OK");
+                return true;
+            }
+        }
+
+        public static bool CheckPathFile(string name)
+        {
+            CheckUsersFolder();
             try
             {
-                using (FileStream fs = File.Open($@"{MeetingsFile}_{username}.json", FileMode.Open, FileAccess.Read, FileShare.None))
-                {
-                    Console.WriteLine("Directory is OK");
-                    return true;
-                }
+                using (FileStream fs = File.Open($@"{Dir}\{name}", FileMode.Open, FileAccess.Read, FileShare.None)) { }
+                return true;
             }
             catch (FileNotFoundException)
             {
+                using (FileStream fs = File.Create($@"{Dir}\{name}")) { }
                 Console.WriteLine($"file is not found, but I created her ");
-
-                using (FileStream fs = File.Create($@"{ MeetingsFile}_{username}.json"))
-                {
-                    return true;
-                }
-
-            }
-            catch (DirectoryNotFoundException)
-            {
-                Console.WriteLine($"Invalid directory ");
                 return false;
             }
-
         }
 
-        public static string GetUsersFile(string username)
+        public static string GetDataFromFile(string name)
         {
-            if (CheckUsersFile(username))
+            if (CheckPathFile(name))
             {
-                try
-                {
-                    return File.ReadAllText($@"{MeetingsFile}_{username}.json") ?? " ";
-                }
-                catch (Exception ex)
-                {
-                    return ex.Message;
-                }
+                return File.ReadAllText($@"{Dir}\{name}") ?? " ";
             }
-            else return "CheckUsersFile is false";
-
+            else
+            {
+                return " ";
+            }
         }
 
-
-
+        public static void SaveTextToFile(string fileName, string text)
+        {
+            CheckPathFile(fileName);
+            File.WriteAllText($@"{Dir}\{fileName}", text);
+        }
 
     }
 }

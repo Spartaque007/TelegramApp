@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -54,11 +55,12 @@ namespace Telegram
             {
                 foreach (var resp in response.result)
                 {
-                    SendMessageCustom("we are recieve You message", resp.message.chat.Id.ToString());
+                    SendMessageCustom($"{resp.message.from.username}, we are recieve You message", resp.message.chat.Id.ToString());
                 }
                 
             }
         }
 
+        
     }
 }
