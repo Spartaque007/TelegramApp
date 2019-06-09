@@ -18,7 +18,7 @@ namespace TelegramApp
         {
             Console.OutputEncoding = Encoding.UTF8;
            
-            Console.ReadKey();
+            
             
 
 

@@ -12,10 +12,10 @@ namespace Telegram
     public class TelegramBot
     {
 
-        private string Token = $@"https://api.telegram.org/{ConfigurationManager.AppSettings.Get("BotToken")}";
+        private static string Token = $@"https://api.telegram.org/{ConfigurationManager.AppSettings.Get("BotToken")}";
         private HttpClient client = new HttpClient();
-        private string myChatID = ConfigurationManager.AppSettings.Get("ChatMy ID");
-        private string GeneralChatId = ConfigurationManager.AppSettings.Get("ChatGeneral ID");
+        private static string myChatID = ConfigurationManager.AppSettings.Get("ChatMy ID");
+        private static string GeneralChatId = ConfigurationManager.AppSettings.Get("ChatGeneral ID");
         public string GetMe()
         {
             return client.GetStringAsync($"{Token }/getMe").Result;
