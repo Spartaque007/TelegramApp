@@ -10,7 +10,7 @@ namespace TelegramApp
 
     public class Updates
     {
-        private List<Update> allUpdates ;
+       private List<Update> allUpdates=new List<Update>();
 
         public List<Update> AllUpdates
         {
@@ -19,25 +19,34 @@ namespace TelegramApp
                 return allUpdates;
             }
 
+            set
+            {
+                if (value != null) allUpdates = value;
+                else allUpdates = new List<Update>();
+            }
+
         }
 
-        public Updates(string allUpdatesFromFile)
-        {
-            allUpdates = JsonConvert.DeserializeObject<List<Update>>(allUpdatesFromFile) ?? new List<Update>();
-        }
+
         public void AddOrChangeUpdate(Update upd)
         {
-            foreach (Update u in this.allUpdates)
+            bool is_contain = false;
+            if (this.allUpdates.Count > 0)
             {
-                if (u.ChatId == upd.ChatId)
+                foreach (Update u in this.allUpdates)
                 {
-                    u.LastUpdateID = upd.LastUpdateID;
-                }
-                else
-                {
-                    allUpdates.Add(upd);
+                    if (u.ChatId == upd.ChatId)
+                    {
+                        u.LastUpdateID = upd.LastUpdateID;
+                        is_contain = true;
+                    }
                 }
             }
+            if (this.allUpdates.Count==0 || !is_contain)
+            {
+                allUpdates.Add(upd);
+            }
+            
         }
         public string GetLastUpdate(string chatID)
         {
@@ -47,7 +56,7 @@ namespace TelegramApp
                 {
                     return update.LastUpdateID;
                 }
-               
+
 
             }
             return "";
@@ -61,6 +70,12 @@ namespace TelegramApp
     {
         public string ChatId { get; set; }
         public string LastUpdateID { get; set; }
+
+        public Update(string chatId, string updateId)
+        {
+            ChatId = chatId;
+            LastUpdateID = updateId;
+        }
 
         public override string ToString()
         {
