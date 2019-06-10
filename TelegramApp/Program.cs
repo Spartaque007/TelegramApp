@@ -11,6 +11,8 @@ using Telegram;
 using DevBy;
 using System.Threading;
 
+using WorkWitFiles;
+
 namespace TelegramApp
 {
     class Program
@@ -28,11 +30,6 @@ namespace TelegramApp
             while (true)
             {
                 
-                
-
-
-                Console.WriteLine("lll");
-                Thread.Sleep(2000);
             }
 
             Console.ReadKey();

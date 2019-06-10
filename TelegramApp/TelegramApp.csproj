@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppDir.cs" />
     <Compile Include="Updates.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,6 +56,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AppDir\WorkWithFiles.csproj">
+      <Project>{8E8CF63C-8F61-487C-A3CD-59589ADD22D7}</Project>
+      <Name>WorkWithFiles</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DevByParser\DevByParser.csproj">
       <Project>{7bc3b0f0-b87f-4af6-9318-84bd8e42ae44}</Project>
       <Name>DevByParser</Name>

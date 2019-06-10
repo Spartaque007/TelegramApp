@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DevBy;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using WorkWitFiles;
 
 namespace Telegram
 {
@@ -31,8 +33,8 @@ namespace Telegram
         public async Task<TelegramResponse> GetUpdate(string updateID)
         {
             string b = await client.GetStringAsync($"{Token}/getUpdates?offset={updateID}?message&timeout=120");
-            return  JsonConvert.DeserializeObject<TelegramResponse>(b);
-            
+            return JsonConvert.DeserializeObject<TelegramResponse>(b);
+
         }
         public string SendMessageMe(string message)
         {
@@ -58,29 +60,58 @@ namespace Telegram
                 {
                     GenerateAnswer(resp);
                 }
-                
+
             }
         }
         private void GenerateAnswer(Result result)
         {
-            switch ($@"{result.message.text.ToUpper()}")
-            {
-                case @"/HELLO":
-                    SendMessageCustom($@"Hello,{result.message.from.first_name} {result.message.from.last_name} !", result.message.chat.Id.ToString());
-                    break;
-                case @"/HOW ARE YOU":
-                    SendMessageCustom($@"Те че поговорить не с кем?", result.message.chat.Id.ToString());
-                    break;
+            string text = result.message.text.ToUpper();
+            string senderName = $"{result.message.from.first_name}";
+            if (text.Contains("@JONNWICKBOT"))
+                {
+                
+                switch ($@"{result.message.text.ToUpper()}")
+                {
+                    case @"/HELLO@JONNWICKBOT":
+                        SendMessageCustom($@"Hello,{result.message.from.first_name} {result.message.from.last_name} !", result.message.chat.Id.ToString());
+                        break;
+                    case @"/HOW ARE YOU@JONNWICKBOT":
+                        SendMessageCustom($@"Те че поговорить не с кем?", result.message.chat.Id.ToString());
+                        break;
+                    case @"/COMMAND1@JONNWICKBOT":
+                        SendMessageCustom($@"Извините, {senderName}, данный раздел ещё в разработке, но Вы можете чекнуть пока на сайте https://events.dev.by/ ", result.message.chat.Id.ToString());
+                        break;
+                    case @"/COMMAND2@JONNWICKBOT":
+                        string userFileName = $@"Meetings_{result.message.from.ID}.json";
+                        DevByParser parser = new DevByParser();
+                        List<EventObject> currEvents = parser.GetEvents();
+                        List<EventObject> prevEvents = JsonConvert.DeserializeObject<List<EventObject>>(AppDir.GetDataFromFile(userFileName)) ?? new List<EventObject>();
+                        List<EventObject> newEvents = currEvents.Except(prevEvents).ToList<EventObject>();
+                        if (newEvents.Count > 0)
+                        {
+                            foreach (EventObject eo in newEvents)
+                            {
+                                SendMessageCustom($@"Date:{eo.EverntDate} Event: {eo.EventName}", result.message.chat.Id.ToString());
 
-                default:
-                    SendMessageCustom($"A am not understand you, Mr.{result.message.from.first_name} {result.message.from.last_name}!!!\n Chose the command from list!\n List of Commands: \n /ShowEvents- displays active meetings with Dev.by\n /ShowNewEvents-displays new events for you with Dev.by ", result.message.chat.Id.ToString());
-                    break;
+                            }
+                            SendMessageCustom($@"*******That's All*****", result.message.chat.Id.ToString());
+                            AppDir.SaveTextToFile(userFileName, JsonConvert.SerializeObject(currEvents));
+                        }
+                        else
+                        {
+                            SendMessageCustom($@"*****No new events for you,{senderName}!*****", result.message.chat.Id.ToString());
+                        }
+                        break;
+
+                    default:
+                        SendMessageCustom($"A am not understand you, {senderName}!!!\n Chose the command from list!\n List of Commands: \n /ShowEvents- displays active meetings with Dev.by\n /ShowNewEvents-displays new events for you with Dev.by ", result.message.chat.Id.ToString());
+                        break;
+                }
+
             }
-
-
 
         }
 
-        
+
     }
 }
