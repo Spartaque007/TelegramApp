@@ -50,8 +50,9 @@ namespace TelegramApp
         }
         public string GetLastUpdate()
         {
-            string a = ((int.Parse(allUpdates.Max<Update>().LastUpdateID)) + 1).ToString();
-            return a;
+            return ((int.Parse((from upd in allUpdates orderby upd.LastUpdateID select upd.LastUpdateID).Max()))+1).ToString();
+  
+            
         }
 
 
@@ -84,6 +85,8 @@ namespace TelegramApp
             return this.ToString().Equals(obj.ToString());
         }
 
+
+         
 
     }
 }
