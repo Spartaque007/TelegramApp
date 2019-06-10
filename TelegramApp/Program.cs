@@ -22,23 +22,27 @@ namespace TelegramApp
         {
 
             Console.OutputEncoding = Encoding.UTF8;
-            
+
             DevByParser devBy = new DevByParser();
             Thread TrelegrammThread = new Thread(FollowTelegram);
             TrelegrammThread.Start();
-            
+            //TimerCallback checkerDevBy = new TimerCallback(CheckNewEvents);
+            //Timer timerOfCheckDevBy = new Timer(checkerDevBy, null, 0, 72);
             while (true)
             {
-                
+               
+
+
+
             }
 
-            Console.ReadKey();
+
         }
-        
+
         static async void FollowTelegram()
         {
             TelegramBot telegramBot = new TelegramBot();
-            
+
             while (true)
             {
                 Updates ChatUpdatesOld = JsonConvert.DeserializeObject<Updates>(AppDir.GetDataFromFile(ChatUpdatesFileName)) ?? new Updates();
@@ -53,11 +57,24 @@ namespace TelegramApp
                     {
                         ChatUpdatesOld.AddOrChangeUpdate(new Update(result.message.chat.Id.ToString(), result.update_id.ToString()));
                         Console.WriteLine($"Message from {result.message.from.username}\n{result.message.text}");
-                        
+
                     }
                     AppDir.SaveTextToFile(ChatUpdatesFileName, JsonConvert.SerializeObject(ChatUpdatesOld));
                 }
             }
+        }
+
+        static void CheckNewEvents(object obj)
+        {
+            DevByParser parser = new DevByParser();
+            List<EventObject> currEvents = parser.GetEvents();
+            List<EventObject> prevEvents = JsonConvert.DeserializeObject<List<EventObject>>(AppDir.GetDataFromFile("Meetings.json")) ?? new List<EventObject>();
+            List<EventObject> newEvents = currEvents.Except(prevEvents).ToList<EventObject>();
+            if (newEvents.Count > 0)
+            {
+
+            }
+
         }
     }
 }

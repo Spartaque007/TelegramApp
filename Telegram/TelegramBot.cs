@@ -68,8 +68,7 @@ namespace Telegram
             string text = result.message.text.ToUpper();
             string senderName = $"{result.message.from.first_name}";
             if (text.Contains("@JONNWICKBOT"))
-                {
-                
+            {
                 switch ($@"{result.message.text.ToUpper()}")
                 {
                     case @"/HELLO@JONNWICKBOT":

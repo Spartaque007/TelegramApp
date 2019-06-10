@@ -26,22 +26,26 @@ namespace DevBy
             clientParser.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
 
         }
-        string GetResponse(int pages)   //getting respons in HTML format from host
+        private string GetResponse(int pages)   //getting respons in HTML format from host
         {
-            string data = "";
 
-            for (int i = 1; i <= pages; i++)
-            {
-                data += clientParser.GetStringAsync($"{host}?page={i}").Result;
+                string data = "";
+                for (int i = 1; i <= pages; i++)
+                {
+                    return data +=   clientParser.GetStringAsync($"{host}?page={i}").Result;
 
-            }
-
+                }
             return data;
+
+
+
+
         }
-        public List<EventObject> GetEvents()
+        public  List<EventObject> GetEvents()
         {
             List<EventObject> meetings = new List<EventObject>();
-            doc.LoadHtml(GetResponse(Pages));
+            string resp = GetResponse(Pages);
+            doc.LoadHtml(resp);
             HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//div[@class='list-item-events list-more']");
 
             foreach (HtmlNode node in nodes)
