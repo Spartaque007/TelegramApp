@@ -27,7 +27,7 @@ namespace Telegram
 
             return a;
         }
-        public Task<string> GetUpdate(string updateID)
+        public string GetUpdate(string updateID)
         {
             string b = client.GetStringAsync($"{Token }/getUpdates?offset={updateID}?message&timeout=120").Result;
 

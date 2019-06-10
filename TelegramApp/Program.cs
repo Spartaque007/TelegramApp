@@ -24,10 +24,7 @@ namespace TelegramApp
 
             while (true)
             {
-                if (telegramTask.IsCompleted)
-                {
-                    telegramTask.
-                }
+               
             }
             Console.ReadKey();
         }
