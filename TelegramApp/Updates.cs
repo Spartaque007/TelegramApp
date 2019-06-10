@@ -48,18 +48,10 @@ namespace TelegramApp
             }
             
         }
-        public string GetLastUpdate(string chatID)
+        public string GetLastUpdate()
         {
-            foreach (Update update in allUpdates)
-            {
-                if (update.ChatId == chatID)
-                {
-                    return update.LastUpdateID;
-                }
-
-
-            }
-            return "";
+            string a = ((int.Parse(allUpdates.Max<Update>().LastUpdateID)) + 1).ToString();
+            return a;
         }
 
 

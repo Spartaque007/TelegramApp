@@ -9,32 +9,45 @@ using System.Text;
 using System.Threading.Tasks;
 using Telegram;
 using DevBy;
+using System.Threading;
 
 namespace TelegramApp
 {
     class Program
     {
+        static string ChatUpdatesFileName = "ChatUpdates.json";
         static void Main(string[] args)
-        { 
-
-            string ChatUpdatesFileName = "ChatUpdates.json";
+        {
             Console.OutputEncoding = Encoding.UTF8;
-            Updates ChatUpdates = JsonConvert.DeserializeObject<Updates>(AppDir.GetDataFromFile(ChatUpdatesFileName))?? new Updates();
-            TelegramBot telegramBot = new TelegramBot();
-            string updates = telegramBot.GetUpdate();
-            Console.WriteLine(updates);
-            TelegramResponse response = JsonConvert.DeserializeObject<TelegramResponse>(updates);
-            if (response.result.Count>0)
+            Task telegramTask = new Task(FollowingTelegram);
+            telegramTask.Start();
+
+            while (true)
             {
-                foreach (var result in response.result)
+                if (telegramTask.IsCompleted)
                 {
-                    ChatUpdates.AddOrChangeUpdate(new Update(result.message.chat.Id.ToString(), result.update_id.ToString()));
+                    telegramTask.
                 }
-                AppDir.SaveTextToFile(ChatUpdatesFileName, JsonConvert.SerializeObject(ChatUpdates));
             }
-            
-            Console.WriteLine("DONE");
             Console.ReadKey();
+        }
+
+        static void FollowingTelegram()
+        {
+            Updates ChatUpdatesOld = JsonConvert.DeserializeObject<Updates>(AppDir.GetDataFromFile(ChatUpdatesFileName)) ?? new Updates();
+            TelegramBot telegramBot = new TelegramBot();
+            var ResponsFromTelegram = telegramBot.GetUpdate(ChatUpdatesOld.GetLastUpdate());
+            Console.WriteLine(ResponsFromTelegram);
+            TelegramResponse MessagesFromTelegram = JsonConvert.DeserializeObject<TelegramResponse>(ResponsFromTelegram);
+            if (MessagesFromTelegram.result.Count > 0)
+            {
+                foreach (var result in MessagesFromTelegram.result)
+                {
+                    ChatUpdatesOld.AddOrChangeUpdate(new Update(result.message.chat.Id.ToString(), result.update_id.ToString()));
+                }
+                AppDir.SaveTextToFile(ChatUpdatesFileName, JsonConvert.SerializeObject(ChatUpdatesOld));
+            }
+
         }
     }
 }
