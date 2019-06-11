@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-
+using System.Threading.Tasks;
 
 namespace WorkWitFiles
 {
@@ -40,11 +40,15 @@ namespace WorkWitFiles
             }
         }
 
-        public static string GetDataFromFile(string name)
+        public static async Task<string> GetDataFromFile(string name)
         {
             if (CheckPathFile(name))
             {
-                return File.ReadAllText($@"{Dir}\{name}") ?? " ";
+                return await Task.Run(() =>
+                {
+                    string str = File.ReadAllText($@"{Dir}\{name}") ?? " ";
+                    return  str;
+                });
             }
             else
             {

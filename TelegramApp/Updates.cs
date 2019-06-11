@@ -10,8 +10,7 @@ namespace TelegramApp
 
     public class Updates
     {
-       private List<Update> allUpdates=new List<Update>();
-
+        private List<Update> allUpdates = new List<Update>();
         public List<Update> AllUpdates
         {
             get
@@ -27,7 +26,6 @@ namespace TelegramApp
 
         }
 
-
         public void AddOrChangeUpdate(Update upd)
         {
             bool is_contain = false;
@@ -42,20 +40,20 @@ namespace TelegramApp
                     }
                 }
             }
-            if (this.allUpdates.Count==0 || !is_contain)
+            if (this.allUpdates.Count == 0 || !is_contain)
             {
                 allUpdates.Add(upd);
             }
-            
+
         }
         public string GetLastUpdate()
         {
-            return ((int.Parse((from upd in allUpdates orderby upd.LastUpdateID select upd.LastUpdateID).Max()))+1).ToString();
-  
-            
+            if (int.TryParse((from upd in allUpdates orderby upd.LastUpdateID select upd.LastUpdateID).Max(), out int a))
+            {
+                return (++a).ToString();
+            }
+            else return "0";
         }
-
-
     }
 
 
@@ -84,9 +82,5 @@ namespace TelegramApp
         {
             return this.ToString().Equals(obj.ToString());
         }
-
-
-         
-
     }
 }

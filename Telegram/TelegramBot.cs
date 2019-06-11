@@ -10,7 +10,9 @@ namespace Telegram
 {
     public class TelegramBot
     {
-
+        private delegate void ShowEvents();
+        event ShowEvents ShowNewEvents;
+        event ShowEvents ShowAllEvents;
         private static string Token = $@"https://api.telegram.org/{ConfigurationManager.AppSettings.Get("BotToken")}";
         private HttpClient client = new HttpClient();
         private static string myChatID = ConfigurationManager.AppSettings.Get("ChatMy ID");
@@ -59,7 +61,7 @@ namespace Telegram
 
             }
         }
-        private void GenerateAnswer(Result result)
+        private async void GenerateAnswer(Result result)
         {
             string text = result.message.text.ToUpper();
             string senderName = $"{result.message.from.first_name}";
@@ -76,11 +78,11 @@ namespace Telegram
                     case @"/COMMAND1@JONNWICKBOT":
                         SendMessageCustom($@"Извините, {senderName}, данный раздел ещё в разработке, но Вы можете чекнуть пока на сайте https://events.dev.by/ ", result.message.chat.Id.ToString());
                         break;
-                    case @"/COMMAND2@JONNWICKBOT":
+                    case @"/SHOWNEWEVENTS@JONNWICKBOT":
                         string userFileName = $@"Meetings_{result.message.from.ID}.json";
                         DevByParser parser = new DevByParser();
                         List<EventObject> currEvents = parser.GetEvents();
-                        List<EventObject> prevEvents = JsonConvert.DeserializeObject<List<EventObject>>(AppDir.GetDataFromFile(userFileName)) ?? new List<EventObject>();
+                        List<EventObject> prevEvents = JsonConvert.DeserializeObject<List<EventObject>>(await AppDir.GetDataFromFile(userFileName)) ?? new List<EventObject>();
                         List<EventObject> newEvents = currEvents.Except(prevEvents).ToList<EventObject>();
                         if (newEvents.Count > 0)
                         {
@@ -106,7 +108,6 @@ namespace Telegram
             }
 
         }
-
 
     }
 }

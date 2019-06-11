@@ -1,7 +1,6 @@
 ﻿
 
 namespace Telegram
-
 {
     public class Chat
     {

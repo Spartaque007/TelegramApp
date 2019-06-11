@@ -15,9 +15,7 @@ namespace TelegramApp
         static string ChatUpdatesFileName = "ChatUpdates.json";
         static void Main(string[] args)
         {
-
             Console.OutputEncoding = Encoding.UTF8;
-
             DevByParser devBy = new DevByParser();
             Thread TrelegrammThread = new Thread(FollowTelegram);
             TrelegrammThread.Start();
@@ -30,17 +28,15 @@ namespace TelegramApp
                 Thread.Sleep(1500);
 
             }
-
-
         }
 
-        static  void FollowTelegram()
+        static async void FollowTelegram()
         {
             TelegramBot telegramBot = new TelegramBot();
-            telegramBot.GetMe();
+           
             while (true)
             {
-                Updates ChatUpdatesOld = JsonConvert.DeserializeObject<Updates>(AppDir.GetDataFromFile(ChatUpdatesFileName)) ?? new Updates();
+                Updates ChatUpdatesOld = JsonConvert.DeserializeObject<Updates>(await AppDir.GetDataFromFile(ChatUpdatesFileName)) ?? new Updates();
                 string updateID = ChatUpdatesOld.GetLastUpdate();
                 TelegramResponse ResponsFromTelegram =telegramBot.GetUpdate(updateID);
                 telegramBot.SendAnswer(ResponsFromTelegram);
@@ -59,17 +55,16 @@ namespace TelegramApp
             }
         }
 
-        static void CheckNewEvents(object obj)
+        static async void CheckNewEvents(object obj)
         {
             DevByParser parser = new DevByParser();
             List<EventObject> currEvents = parser.GetEvents();
-            List<EventObject> prevEvents = JsonConvert.DeserializeObject<List<EventObject>>(AppDir.GetDataFromFile("Meetings.json")) ?? new List<EventObject>();
+            List<EventObject> prevEvents = JsonConvert.DeserializeObject<List<EventObject>>(await AppDir.GetDataFromFile("Meetings.json")) ?? new List<EventObject>();
             List<EventObject> newEvents = currEvents.Except(prevEvents).ToList<EventObject>();
             if (newEvents.Count > 0)
             {
 
             }
-
         }
     }
 }
