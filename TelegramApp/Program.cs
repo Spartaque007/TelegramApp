@@ -30,8 +30,9 @@ namespace TelegramApp
             Timer timerOfCheckDevBy = new Timer(checkerDevBy, null, 0, 72);
             while (true)
             {
-               
 
+                Console.WriteLine("Work");
+                Thread.Sleep(1500);
 
 
             }
