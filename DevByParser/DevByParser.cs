@@ -1,16 +1,11 @@
 ﻿using System.Configuration;
-
-using System.Collections.Specialized;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.IO;
+
 
 namespace DevBy
 {
