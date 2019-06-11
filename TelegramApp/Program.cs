@@ -26,8 +26,8 @@ namespace TelegramApp
             DevByParser devBy = new DevByParser();
             Thread TrelegrammThread = new Thread(FollowTelegram);
             TrelegrammThread.Start();
-            //TimerCallback checkerDevBy = new TimerCallback(CheckNewEvents);
-            //Timer timerOfCheckDevBy = new Timer(checkerDevBy, null, 0, 72);
+            TimerCallback checkerDevBy = new TimerCallback(CheckNewEvents);
+            Timer timerOfCheckDevBy = new Timer(checkerDevBy, null, 0, 72);
             while (true)
             {
                
