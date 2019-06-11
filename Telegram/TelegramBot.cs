@@ -10,9 +10,17 @@ namespace Telegram
 {
     public class TelegramBot
     {
-        private delegate void ShowEvents();
-        event ShowEvents ShowNewEvents;
-        event ShowEvents ShowAllEvents;
+        public delegate List<EventObject> GetNewEvent(string userFileName);
+        public event GetNewEvent GetNewEvents;
+        public event GetNewEvent GetAllEvents;
+
+        public delegate void BotSaveEvent(string UserFileName, List<EventObject> CurrEvents);
+        public event BotSaveEvent SaveEventsForUser;
+
+        
+        
+
+
         private static string Token = $@"https://api.telegram.org/{ConfigurationManager.AppSettings.Get("BotToken")}";
         private HttpClient client = new HttpClient();
         private static string myChatID = ConfigurationManager.AppSettings.Get("ChatMy ID");
@@ -61,10 +69,11 @@ namespace Telegram
 
             }
         }
-        private async void GenerateAnswer(Result result)
+        private  void GenerateAnswer(Result result)
         {
             string text = result.message.text.ToUpper();
             string senderName = $"{result.message.from.first_name}";
+            string userFileName = $@"Meetings_{result.message.from.ID}.json";
             if (text.Contains("@JONNWICKBOT"))
             {
                 switch ($@"{result.message.text.ToUpper()}")
@@ -75,15 +84,21 @@ namespace Telegram
                     case @"/HOW ARE YOU@JONNWICKBOT":
                         SendMessageCustom($@"Те че поговорить не с кем?", result.message.chat.Id.ToString());
                         break;
-                    case @"/COMMAND1@JONNWICKBOT":
-                        SendMessageCustom($@"Извините, {senderName}, данный раздел ещё в разработке, но Вы можете чекнуть пока на сайте https://events.dev.by/ ", result.message.chat.Id.ToString());
+                    case @"/SHOWEVENTS@JONNWICKBOT":
+                        List<EventObject> allEvents = GetAllEvents(userFileName);
+                        if (allEvents.Capacity > 0)
+                        {
+                            foreach (EventObject eo in allEvents)
+                            {
+                                SendMessageCustom($@"Date:{eo.EverntDate} Event: {eo.EventName}", result.message.chat.Id.ToString());
+
+                            }
+                            SendMessageCustom($@"*******That's All*****", result.message.chat.Id.ToString());
+                            
+                        }
                         break;
                     case @"/SHOWNEWEVENTS@JONNWICKBOT":
-                        string userFileName = $@"Meetings_{result.message.from.ID}.json";
-                        DevByParser parser = new DevByParser();
-                        List<EventObject> currEvents = parser.GetEvents();
-                        List<EventObject> prevEvents = JsonConvert.DeserializeObject<List<EventObject>>(await AppDir.GetDataFromFile(userFileName)) ?? new List<EventObject>();
-                        List<EventObject> newEvents = currEvents.Except(prevEvents).ToList<EventObject>();
+                        List<EventObject> newEvents = GetNewEvents(userFileName);
                         if (newEvents.Count > 0)
                         {
                             foreach (EventObject eo in newEvents)
@@ -92,7 +107,7 @@ namespace Telegram
 
                             }
                             SendMessageCustom($@"*******That's All*****", result.message.chat.Id.ToString());
-                            AppDir.SaveTextToFile(userFileName, JsonConvert.SerializeObject(currEvents));
+                            
                         }
                         else
                         {

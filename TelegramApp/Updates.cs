@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace TelegramApp
 {
@@ -25,6 +22,7 @@ namespace TelegramApp
             }
 
         }
+       
 
         public void AddOrChangeUpdate(Update upd)
         {
@@ -48,6 +46,7 @@ namespace TelegramApp
         }
         public string GetLastUpdate()
         {
+
             if (int.TryParse((from upd in allUpdates orderby upd.LastUpdateID select upd.LastUpdateID).Max(), out int a))
             {
                 return (++a).ToString();
