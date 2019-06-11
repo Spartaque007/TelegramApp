@@ -8,7 +8,7 @@ namespace WorkWitFiles
     public static class AppDir
     {
         public static string Dir { get; } = $@"{ConfigurationManager.AppSettings.Get("DefaultDir") ?? "."}";
-        
+
         public static bool CheckUsersFolder()
         {
             if (!Directory.Exists(Dir))
@@ -38,6 +38,12 @@ namespace WorkWitFiles
                 Console.WriteLine($"file is not found, but I created her ");
                 return false;
             }
+            catch (System.IO.IOException ex)
+            {
+                Console.WriteLine(ex.Message);
+               
+                return true;
+            }
         }
 
         public static async Task<string> GetDataFromFile(string name)
@@ -47,7 +53,7 @@ namespace WorkWitFiles
                 return await Task.Run(() =>
                 {
                     string str = File.ReadAllText($@"{Dir}\{name}") ?? " ";
-                    return  str;
+                    return str;
                 });
             }
             else
@@ -59,7 +65,18 @@ namespace WorkWitFiles
         public static void SaveTextToFile(string fileName, string text)
         {
             CheckPathFile(fileName);
-            File.WriteAllText($@"{Dir}\{fileName}", text);
+            try
+            {
+                File.WriteAllText($@"{Dir}\{fileName}", text);
+            }
+            catch (System.IO.IOException ex)
+            {
+                Console.WriteLine(ex.Message);
+                
+            }
+
+
+
         }
 
     }

@@ -8,22 +8,45 @@ using DevBy;
 using System.Threading;
 using WorkWitFiles;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace TelegramApp
 {
     class Program
     {
         static string ChatUpdatesFileName = "ChatUpdates.json";
-       // static string DefaultMeetingFileName = "Meetings.json";
+        static string DefaultMeetingFileName = "Meetings_0.json";
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
             DevByParser devBy = new DevByParser();
             Thread TrelegrammThread = new Thread(FollowTelegram);
             TrelegrammThread.Start();
-
+            TimerCallback Cb = new TimerCallback((object ob) =>
+            {
+                List<EventObject> newEvents = CheckNewEvents(DefaultMeetingFileName);
+                if (newEvents.Count > 0)
+                {
+                    TelegramBot bot = new TelegramBot();
+                    Updates ChatUpdatesOld = JsonConvert.DeserializeObject<Updates>(AppDir.GetDataFromFile(ChatUpdatesFileName).Result) ?? new Updates();
+                    TelegramResponse resp = new TelegramResponse();
+                    resp.Ok = true;
+                    resp.result = new List<Result>();
+                    Result res = new Result();
+                    res.update_id = int.Parse(ChatUpdatesOld.GetLastUpdate());
+                    res.message = new Message();
+                    res.message.chat.Id = int.Parse(ConfigurationManager.AppSettings.Get("ChatGeneral ID"));
+                    res.message.from.ID = 0;
+                    res.message.from.username = "gays";
+                    res.message.text = @"/SHOWNEWEVENTS@JONNWICKBOT";
+                    resp.result.Add(res);
+                    bot.SendAnswer(resp);
+                }
+            });
+            Timer timer = new Timer(Cb, null, 0, 6000);
             while (true)
             {
+
 
                 Console.WriteLine("Work");
                 Thread.Sleep(1500);
@@ -36,7 +59,7 @@ namespace TelegramApp
             TelegramBot telegramBot = new TelegramBot();
             telegramBot.GetNewEvents += CheckNewEvents;
             telegramBot.GetAllEvents += GetAllEvents;
-            telegramBot.SaveEventsForUser += SaveEventsToFile;
+            
             while (true)
             {
                 //Get All updates from local file

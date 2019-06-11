@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
-using WorkWitFiles;
+
 
 namespace Telegram
 {
@@ -13,14 +13,8 @@ namespace Telegram
         public delegate List<EventObject> GetNewEvent(string userFileName);
         public event GetNewEvent GetNewEvents;
         public event GetNewEvent GetAllEvents;
-
-        public delegate void BotSaveEvent(string UserFileName, List<EventObject> CurrEvents);
-        public event BotSaveEvent SaveEventsForUser;
-
+       
         
-        
-
-
         private static string Token = $@"https://api.telegram.org/{ConfigurationManager.AppSettings.Get("BotToken")}";
         private HttpClient client = new HttpClient();
         private static string myChatID = ConfigurationManager.AppSettings.Get("ChatMy ID");
@@ -69,7 +63,7 @@ namespace Telegram
 
             }
         }
-        private  void GenerateAnswer(Result result)
+        private void GenerateAnswer(Result result)
         {
             string text = result.message.text.ToUpper();
             string senderName = $"{result.message.from.first_name}";
@@ -94,7 +88,7 @@ namespace Telegram
 
                             }
                             SendMessageCustom($@"*******That's All*****", result.message.chat.Id.ToString());
-                            
+
                         }
                         break;
                     case @"/SHOWNEWEVENTS@JONNWICKBOT":
@@ -107,7 +101,7 @@ namespace Telegram
 
                             }
                             SendMessageCustom($@"*******That's All*****", result.message.chat.Id.ToString());
-                            
+
                         }
                         else
                         {

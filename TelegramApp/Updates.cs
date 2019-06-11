@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace TelegramApp
 {
-
     public class Updates
     {
         private List<Update> allUpdates = new List<Update>();
@@ -23,7 +22,6 @@ namespace TelegramApp
 
         }
        
-
         public void AddOrChangeUpdate(Update upd)
         {
             bool is_contain = false;
