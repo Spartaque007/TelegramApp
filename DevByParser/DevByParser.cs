@@ -23,7 +23,6 @@ namespace DevBy
         }
         private string GetResponse(int pages)   //getting respons in HTML format from host
         {
-
                 string data = "";
                 for (int i = 1; i <= pages; i++)
                 {
@@ -31,10 +30,6 @@ namespace DevBy
 
                 }
             return data;
-
-
-
-
         }
         public  List<EventObject> GetEvents()
         {

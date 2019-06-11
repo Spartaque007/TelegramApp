@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 using WorkWitFiles;
 
 namespace Telegram
@@ -27,9 +26,9 @@ namespace Telegram
 
             return a;
         }
-        public async Task<TelegramResponse> GetUpdate(string updateID)
+        public TelegramResponse GetUpdate(string updateID)
         {
-            string b = await client.GetStringAsync($"{Token}/getUpdates?offset={updateID}?message&timeout=120");
+            string b = client.GetStringAsync($"{Token}/getUpdates?offset={updateID}?message&timeout=120").Result;
             return JsonConvert.DeserializeObject<TelegramResponse>(b);
 
         }

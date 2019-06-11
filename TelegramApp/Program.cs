@@ -21,8 +21,8 @@ namespace TelegramApp
             DevByParser devBy = new DevByParser();
             Thread TrelegrammThread = new Thread(FollowTelegram);
             TrelegrammThread.Start();
-            TimerCallback checkerDevBy = new TimerCallback(CheckNewEvents);
-            Timer timerOfCheckDevBy = new Timer(checkerDevBy, null, 0, 72);
+            //TimerCallback checkerDevBy = new TimerCallback(CheckNewEvents);
+            //Timer timerOfCheckDevBy = new Timer(checkerDevBy, null, 0, 72);
             while (true)
             {
 
@@ -34,15 +34,15 @@ namespace TelegramApp
 
         }
 
-        static async void FollowTelegram()
+        static  void FollowTelegram()
         {
             TelegramBot telegramBot = new TelegramBot();
-
+            telegramBot.GetMe();
             while (true)
             {
                 Updates ChatUpdatesOld = JsonConvert.DeserializeObject<Updates>(AppDir.GetDataFromFile(ChatUpdatesFileName)) ?? new Updates();
                 string updateID = ChatUpdatesOld.GetLastUpdate();
-                TelegramResponse ResponsFromTelegram = await telegramBot.GetUpdate(updateID);
+                TelegramResponse ResponsFromTelegram =telegramBot.GetUpdate(updateID);
                 telegramBot.SendAnswer(ResponsFromTelegram);
 
 
