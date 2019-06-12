@@ -36,7 +36,6 @@ namespace TelegramApp
             TelegramBot telegramBot = new TelegramBot();
             telegramBot.GetNewEvents += CheckNewEvents;
             telegramBot.GetAllEvents += GetAllEvents;
-            telegramBot.SaveEventsForUser += SaveEventsToFile;
             TimerCallback Cb = new TimerCallback((object ob) =>
             {
                 TelegramBot bot = (TelegramBot)ob;
@@ -54,7 +53,7 @@ namespace TelegramApp
                 bot.SendAnswer(resp);
 
             });
-            Timer timer = new Timer(Cb, telegramBot, 0, 6000);
+            Timer timer = new Timer(Cb, telegramBot, 0, 10000);
 
             while (true)
             {
