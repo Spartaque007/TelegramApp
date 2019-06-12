@@ -92,7 +92,7 @@ namespace Telegram
                         }
                         break;
                     case @"/SHOWNEWEVENTS@JONNWICKBOT":
-                        List<EventObject> newEvents = GetNewEvents(userFileName);
+                        List<EventObject> newEvents = GetNewEvents(userFileName) ?? new List<EventObject>();
                         if (newEvents.Count > 0)
                         {
                             foreach (EventObject eo in newEvents)
