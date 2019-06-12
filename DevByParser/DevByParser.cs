@@ -65,8 +65,5 @@ namespace DevBy
         {
             return (this.GetEvents().Except(prevEvents ?? new List<EventObject>())).ToList();
         }
-
-
-
     }
 }

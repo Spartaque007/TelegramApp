@@ -1,6 +1,4 @@
-﻿
-
-namespace Telegram
+﻿namespace Telegram
 {
    // [JsonObject("result")]
     public class Result
