@@ -8,10 +8,5 @@ namespace Telegram
         public Chat chat = new Chat();
         public int date { get; set; }
         public string text { get; set; }
-
-
-
-
-
     }
 }

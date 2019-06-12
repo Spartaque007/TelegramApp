@@ -27,7 +27,7 @@ namespace TelegramApp
             {
 
                 Console.WriteLine("Work");
-                Thread.Sleep(1500);
+                Thread.Sleep(9000);
 
             }
 
