@@ -13,7 +13,6 @@ namespace Telegram
         public event GetNewEvent GetNewEvents;
         public event GetNewEvent GetAllEvents;
         public delegate void BotSaveEvent(string UserFileName, List<EventObject> CurrEvents);
-        public event BotSaveEvent SaveEventsForUser;
         private static string Token = $@"https://api.telegram.org/{ConfigurationManager.AppSettings.Get("BotToken")}";
         private HttpClient client = new HttpClient();
         private static string myChatID = ConfigurationManager.AppSettings.Get("ChatMy ID");
@@ -57,7 +56,6 @@ namespace Telegram
                 {
                     GenerateAnswer(resp);
                 }
-
             }
         }
         private void GenerateAnswer(Result result)
