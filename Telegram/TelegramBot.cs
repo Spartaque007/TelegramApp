@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
-
+using WorkWitFiles;
 
 namespace Telegram
 {
@@ -13,8 +13,14 @@ namespace Telegram
         public delegate List<EventObject> GetNewEvent(string userFileName);
         public event GetNewEvent GetNewEvents;
         public event GetNewEvent GetAllEvents;
-       
+
+        public delegate void BotSaveEvent(string UserFileName, List<EventObject> CurrEvents);
+        public event BotSaveEvent SaveEventsForUser;
+
         
+        
+
+
         private static string Token = $@"https://api.telegram.org/{ConfigurationManager.AppSettings.Get("BotToken")}";
         private HttpClient client = new HttpClient();
         private static string myChatID = ConfigurationManager.AppSettings.Get("ChatMy ID");
@@ -63,7 +69,7 @@ namespace Telegram
 
             }
         }
-        private void GenerateAnswer(Result result)
+        private  void GenerateAnswer(Result result)
         {
             string text = result.message.text.ToUpper();
             string senderName = $"{result.message.from.first_name}";
@@ -88,11 +94,16 @@ namespace Telegram
 
                             }
                             SendMessageCustom($@"*******That's All*****", result.message.chat.Id.ToString());
-
+                            
                         }
                         break;
                     case @"/SHOWNEWEVENTS@JONNWICKBOT":
-                        List<EventObject> newEvents = GetNewEvents(userFileName) ?? new List<EventObject>();
+                        List<EventObject> newEvents = GetNewEvents(userFileName);
+                        if (!result.message.from.Is_bot)
+                        {
+                            SendMessageCustom($@"*****New events from DEV.BY*****", result.message.chat.Id.ToString());
+                        }
+
                         if (newEvents.Count > 0)
                         {
                             foreach (EventObject eo in newEvents)
@@ -101,11 +112,15 @@ namespace Telegram
 
                             }
                             SendMessageCustom($@"*******That's All*****", result.message.chat.Id.ToString());
-
+                            
                         }
                         else
                         {
-                            SendMessageCustom($@"*****No new events for you,{senderName}!*****", result.message.chat.Id.ToString());
+                            if(!result.message.from.Is_bot)
+                            {
+                                SendMessageCustom($@"*****No new events for you,{senderName}!*****", result.message.chat.Id.ToString());
+                            }
+                            
                         }
                         break;
 
