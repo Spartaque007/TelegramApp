@@ -7,14 +7,14 @@ using Telegram;
 using DevBy;
 using System.Threading;
 using WorkWitFiles;
-using System.Threading.Tasks;
+using System.Configuration;
 
 namespace TelegramApp
 {
     class Program
     {
         static string ChatUpdatesFileName = "ChatUpdates.json";
-       // static string DefaultMeetingFileName = "Meetings.json";
+      
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
@@ -37,6 +37,25 @@ namespace TelegramApp
             telegramBot.GetNewEvents += CheckNewEvents;
             telegramBot.GetAllEvents += GetAllEvents;
             telegramBot.SaveEventsForUser += SaveEventsToFile;
+            TimerCallback Cb = new TimerCallback((object ob) =>
+            {
+                TelegramBot bot = (TelegramBot)ob;
+                TelegramResponse resp = new TelegramResponse();
+                resp.Ok = true;
+                resp.result = new List<Result>();
+                Result res = new Result();
+                res.message = new Message();
+                res.message.chat.Id = int.Parse(ConfigurationManager.AppSettings.Get("ChatMy ID"));
+                res.message.from.ID = 0;
+                res.message.from.Is_bot = true;
+                res.message.from.username = "gays";
+                res.message.text = @"/SHOWNEWEVENTS@JONNWICKBOT";
+                resp.result.Add(res);
+                bot.SendAnswer(resp);
+
+            });
+            Timer timer = new Timer(Cb, telegramBot, 0, 6000);
+
             while (true)
             {
                 //Get All updates from local file
@@ -67,9 +86,8 @@ namespace TelegramApp
 
         static List<EventObject> CheckNewEvents(string UserFileName)
         {
-
-            var currEvents = GetAllEvents(UserFileName);
             List<EventObject> prevEvents = JsonConvert.DeserializeObject<List<EventObject>>(AppDir.GetDataFromFile(UserFileName).Result) ?? new List<EventObject>();
+            var currEvents = GetAllEvents(UserFileName);
             return currEvents.Except(prevEvents).ToList<EventObject>();
 
         }

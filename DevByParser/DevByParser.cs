@@ -26,7 +26,7 @@ namespace DevBy
                 string data = "";
                 for (int i = 1; i <= pages; i++)
                 {
-                    return data +=   clientParser.GetStringAsync($"{host}?page={i}").Result;
+                   data +=   clientParser.GetStringAsync($"{host}?page={i}").Result;
 
                 }
             return data;

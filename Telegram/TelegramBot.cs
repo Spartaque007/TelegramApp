@@ -2,9 +2,8 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Net.Http;
-using WorkWitFiles;
+
 
 namespace Telegram
 {
@@ -13,14 +12,8 @@ namespace Telegram
         public delegate List<EventObject> GetNewEvent(string userFileName);
         public event GetNewEvent GetNewEvents;
         public event GetNewEvent GetAllEvents;
-
         public delegate void BotSaveEvent(string UserFileName, List<EventObject> CurrEvents);
         public event BotSaveEvent SaveEventsForUser;
-
-        
-        
-
-
         private static string Token = $@"https://api.telegram.org/{ConfigurationManager.AppSettings.Get("BotToken")}";
         private HttpClient client = new HttpClient();
         private static string myChatID = ConfigurationManager.AppSettings.Get("ChatMy ID");
@@ -51,13 +44,11 @@ namespace Telegram
 
             return client.GetStringAsync($"{Token }/sendMessage?chat_id={GeneralChatId}&text={message}").Result;
         }
-
         public string SendMessageCustom(string message, string chatID)
         {
 
             return client.GetStringAsync($"{Token }/sendMessage?chat_id={chatID}&text={message}").Result;
         }
-
         public void SendAnswer(TelegramResponse response)
         {
             if (response.result.Count > 0)
@@ -69,7 +60,7 @@ namespace Telegram
 
             }
         }
-        private  void GenerateAnswer(Result result)
+        private void GenerateAnswer(Result result)
         {
             string text = result.message.text.ToUpper();
             string senderName = $"{result.message.from.first_name}";
@@ -81,7 +72,7 @@ namespace Telegram
                     case @"/HELLO@JONNWICKBOT":
                         SendMessageCustom($@"Hello,{result.message.from.first_name} {result.message.from.last_name} !", result.message.chat.Id.ToString());
                         break;
-                    case @"/HOW ARE YOU@JONNWICKBOT":
+                    case @"/HOWAREYOU@JONNWICKBOT":
                         SendMessageCustom($@"Те че поговорить не с кем?", result.message.chat.Id.ToString());
                         break;
                     case @"/SHOWEVENTS@JONNWICKBOT":
@@ -94,12 +85,12 @@ namespace Telegram
 
                             }
                             SendMessageCustom($@"*******That's All*****", result.message.chat.Id.ToString());
-                            
+
                         }
                         break;
                     case @"/SHOWNEWEVENTS@JONNWICKBOT":
                         List<EventObject> newEvents = GetNewEvents(userFileName);
-                        if (!result.message.from.Is_bot)
+                        if (!result.message.from.Is_bot && newEvents.Capacity > 0)
                         {
                             SendMessageCustom($@"*****New events from DEV.BY*****", result.message.chat.Id.ToString());
                         }
@@ -111,16 +102,18 @@ namespace Telegram
                                 SendMessageCustom($@"Date:{eo.EverntDate} Event: {eo.EventName}", result.message.chat.Id.ToString());
 
                             }
-                            SendMessageCustom($@"*******That's All*****", result.message.chat.Id.ToString());
-                            
+                            if (!result.message.from.Is_bot && newEvents.Capacity > 0)
+                            {
+                                SendMessageCustom($@"*******That's All*****", result.message.chat.Id.ToString());
+                            }
                         }
                         else
                         {
-                            if(!result.message.from.Is_bot)
+                            if (!result.message.from.Is_bot)
                             {
                                 SendMessageCustom($@"*****No new events for you,{senderName}!*****", result.message.chat.Id.ToString());
                             }
-                            
+
                         }
                         break;
 
