@@ -6,7 +6,7 @@ using System.Text;
 using Telegram;
 using DevBy;
 using System.Threading;
-using WorkWitFiles;
+using WorkWithFiles;
 using System.Configuration;
 
 namespace TelegramApp
@@ -14,7 +14,7 @@ namespace TelegramApp
     class Program
     {
         static string ChatUpdatesFileName = "ChatUpdates.json";
-      
+
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
@@ -34,9 +34,10 @@ namespace TelegramApp
         static async void FollowTelegram()
         {
             TelegramBot telegramBot = new TelegramBot();
-            telegramBot.GetNewEvents += CheckNewEvents;
-            telegramBot.GetAllEvents += GetAllEvents;
-            TimerCallback Cb = new TimerCallback((object ob) =>
+            telegramBot.GetNewEvents += JsonEventStorage.CheckNewEvents;
+            telegramBot.GetAllEvents += JsonEventStorage.GetAllEvents;
+
+            TimerCallback checkEvents = new TimerCallback((object ob) =>
             {
                 TelegramBot bot = (TelegramBot)ob;
                 TelegramResponse resp = new TelegramResponse();
@@ -44,7 +45,7 @@ namespace TelegramApp
                 resp.result = new List<Result>();
                 Result res = new Result();
                 res.message = new Message();
-                res.message.chat.Id = int.Parse(ConfigurationManager.AppSettings.Get("ChatMy ID"));
+                res.message.chat.Id = int.Parse(ConfigurationManager.AppSettings.Get("ChatGeneral ID"));
                 res.message.from.ID = 0;
                 res.message.from.Is_bot = true;
                 res.message.from.username = "gays";
@@ -53,12 +54,14 @@ namespace TelegramApp
                 bot.SendAnswer(resp);
 
             });
-            Timer timer = new Timer(Cb, telegramBot, 0, 10000);
+            Timer timer = new Timer(checkEvents, telegramBot, 0, 10000);
 
             while (true)
             {
                 //Get All updates from local file
-                Updates ChatUpdatesOld = JsonConvert.DeserializeObject<Updates>(await AppDir.GetDataFromFile(ChatUpdatesFileName)) ?? new Updates();
+                string value = await AppDir.GetDataFromFile(ChatUpdatesFileName);
+                Updates ChatUpdatesOld = JsonConvert.DeserializeObject<Updates>(value) ?? new Updates();
+
                 //Get Last update for all chats
                 string updateID = ChatUpdatesOld.GetLastUpdate();
                 //Get respons with last updates from telegram
@@ -82,24 +85,6 @@ namespace TelegramApp
                 }
             }
         }
-
-        static List<EventObject> CheckNewEvents(string UserFileName)
-        {
-            List<EventObject> prevEvents = JsonConvert.DeserializeObject<List<EventObject>>(AppDir.GetDataFromFile(UserFileName).Result) ?? new List<EventObject>();
-            var currEvents = GetAllEvents(UserFileName);
-            return currEvents.Except(prevEvents).ToList<EventObject>();
-
-        }
-        static List<EventObject> GetAllEvents(string UserFileName)
-        {
-            DevByParser parser = new DevByParser();
-            var currEvents = parser.GetEvents();
-            SaveEventsToFile(UserFileName, currEvents);
-            return currEvents;
-        }
-        static void SaveEventsToFile(string UserFileName, List<EventObject> CurrEvents)
-        {
-            AppDir.SaveTextToFile(UserFileName, JsonConvert.SerializeObject(CurrEvents));
-        }
+               
     }
 }

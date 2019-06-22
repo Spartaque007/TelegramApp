@@ -74,20 +74,29 @@ namespace Telegram
                         SendMessageCustom($@"Те че поговорить не с кем?", result.message.chat.Id.ToString());
                         break;
                     case @"/SHOWEVENTS@JONNWICKBOT":
-                        List<EventObject> allEvents = GetAllEvents(userFileName);
+                        List<EventObject> allEvents = new List<EventObject>();
+                        if (GetAllEvents!=null)
+                        {
+                           allEvents = GetAllEvents(userFileName);
+                        }
+
                         if (allEvents.Capacity > 0)
                         {
                             foreach (EventObject eo in allEvents)
                             {
                                 SendMessageCustom($@"Date:{eo.EverntDate} Event: {eo.EventName}", result.message.chat.Id.ToString());
-
                             }
-                            SendMessageCustom($@"*******That's All*****", result.message.chat.Id.ToString());
 
+                            SendMessageCustom($@"*******That's All*****", result.message.chat.Id.ToString());
                         }
                         break;
                     case @"/SHOWNEWEVENTS@JONNWICKBOT":
-                        List<EventObject> newEvents = GetNewEvents(userFileName);
+                        List<EventObject> newEvents =new List<EventObject>();
+                        if (GetNewEvents!=null)
+                        {
+                           newEvents = GetNewEvents(userFileName);
+                        }
+                        
                         if (!result.message.from.Is_bot && newEvents.Capacity > 0)
                         {
                             SendMessageCustom($@"*****New events from DEV.BY*****", result.message.chat.Id.ToString());
@@ -98,8 +107,8 @@ namespace Telegram
                             foreach (EventObject eo in newEvents)
                             {
                                 SendMessageCustom($@"Date:{eo.EverntDate} Event: {eo.EventName}", result.message.chat.Id.ToString());
-
                             }
+
                             if (!result.message.from.Is_bot && newEvents.Capacity > 0)
                             {
                                 SendMessageCustom($@"*******That's All*****", result.message.chat.Id.ToString());
@@ -111,7 +120,6 @@ namespace Telegram
                             {
                                 SendMessageCustom($@"*****No new events for you,{senderName}!*****", result.message.chat.Id.ToString());
                             }
-
                         }
                         break;
 

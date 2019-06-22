@@ -3,7 +3,7 @@ using System.Configuration;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace WorkWitFiles
+namespace WorkWithFiles
 {
     public static class AppDir
     {

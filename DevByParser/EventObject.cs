@@ -2,7 +2,7 @@
 
 namespace DevBy
 {
-
+    [Serializable]
     public class EventObject
     {
 
