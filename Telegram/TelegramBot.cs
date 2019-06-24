@@ -43,7 +43,7 @@ namespace Telegram
 
             return client.GetStringAsync($"{Token }/sendMessage?chat_id={GeneralChatId}&text={message}").Result;
         }
-        public string SendMessageCustom(string message, string chatID)
+        public string SendMessageCustom(string message, int chatID)
         {
 
             return client.GetStringAsync($"{Token }/sendMessage?chat_id={chatID}&text={message}").Result;

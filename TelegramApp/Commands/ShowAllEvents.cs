@@ -14,7 +14,14 @@ namespace TelegramApp.Commands
 
         public void ExecuteCommand(Result result)
         {
+            TelegramBot bot = new TelegramBot();
             DevByParser parser = new DevByParser();
+            List<EventObject> currEvents = parser.GetEvents();
+            foreach (var sub in currEvents)
+            {
+                bot.SendMessageCustom(sub.ToString(), result.message.chat.Id);
+            }
+            
             
         }
     }

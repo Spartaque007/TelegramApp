@@ -15,15 +15,13 @@ namespace TelegramApp
     {
         private IStorage Storage;
         private TelegramBot TelegramBot;
-        
+
 
 
         public App(ref IStorage storage, ref TelegramBot bot)
         {
             this.Storage = storage;
             this.TelegramBot = bot;
-            this.DevByParser = parser;
-
         }
         public void Run()
         {
@@ -36,7 +34,7 @@ namespace TelegramApp
                 foreach (var result in ResponseFromTelegram.result)
                 {
                     Console.WriteLine($"Message from {result.message.from.first_name}\n" +
-                        $"Messge Text {result.message.text}");
+                        $"Message Text {result.message.text}");
                     operation.PerformAnswer(result.message.text).ExecuteCommand(result);
                 }
             }
