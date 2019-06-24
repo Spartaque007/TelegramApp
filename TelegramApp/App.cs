@@ -35,7 +35,7 @@ namespace TelegramApp
                 {
                     Console.WriteLine($"Message from {result.message.from.first_name}\n" +
                         $"Message Text {result.message.text}");
-                    operation.PerformAnswer(result.message.text).ExecuteCommand(result);
+                    operation.GetCommandFromMessage(result.message.text).ExecuteCommand(result);
                 }
             }
         }

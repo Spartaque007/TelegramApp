@@ -11,7 +11,7 @@ namespace TelegramApp
 {
     public class TelegramActions
     {
-        public ICommand PerformAnswer(string message)
+        public ICommand GetCommandFromMessage(string message)
         {
             
             if (message.ToUpper().Contains("@JONNWICKBOT"))

@@ -29,34 +29,30 @@ namespace TelegramApp
         }
         static async void FollowTelegram()
         {
-            TelegramBot telegramBot = new TelegramBot();
-            telegramBot.GetNewEvents += ;
-            telegramBot.GetAllEvents += BinaryEventStorage.GetAllEvents;
+            //TimerCallback checkEvents = new TimerCallback((object ob) =>
+            //{
+            //    TelegramBot bot = (TelegramBot)ob;
+            //    TelegramResponse resp = new TelegramResponse();
+            //    resp.Ok = true;
+            //    resp.result = new List<Result>();
+            //    Result res = new Result();
+            //    res.message = new Message();
+            //    res.message.chat.Id = int.Parse(ConfigurationManager.AppSettings.Get("ChatGeneral ID"));
+            //    res.message.from.ID = 0;
+            //    res.message.from.Is_bot = true;
+            //    res.message.from.username = "gays";
+            //    res.message.text = @"/SHOWNEWEVENTS@JONNWICKBOT";
+            //    resp.result.Add(res);
+            //    bot.SendAnswer(resp);
 
-            TimerCallback checkEvents = new TimerCallback((object ob) =>
-            {
-                TelegramBot bot = (TelegramBot)ob;
-                TelegramResponse resp = new TelegramResponse();
-                resp.Ok = true;
-                resp.result = new List<Result>();
-                Result res = new Result();
-                res.message = new Message();
-                res.message.chat.Id = int.Parse(ConfigurationManager.AppSettings.Get("ChatGeneral ID"));
-                res.message.from.ID = 0;
-                res.message.from.Is_bot = true;
-                res.message.from.username = "gays";
-                res.message.text = @"/SHOWNEWEVENTS@JONNWICKBOT";
-                resp.result.Add(res);
-                bot.SendAnswer(resp);
-
-            });
-            Timer timer = new Timer(checkEvents, telegramBot, 0, 10000);
+            //});
+            //Timer timer = new Timer(checkEvents, telegramBot, 0, 10000);
 
             while (true)
             {
                 //Get All updates from local file
                 string ChatUpdatesFileName = ConfigurationManager.AppSettings["hatUpdatesFileName"];
-                string value = await AppDir.GetDataFromFile(ChatUpdatesFileName);
+                string value = await LocalFile.GetDataFromFile(ChatUpdatesFileName);
                 Updates ChatUpdatesOld = JsonConvert.DeserializeObject<Updates>(value) ?? new Updates();
 
                 //Get Last update for all chats
@@ -78,7 +74,7 @@ namespace TelegramApp
 
                     }
                     //Save last updateID to the local file
-                    AppDir.SaveTextToFile(ChatUpdatesFileName, JsonConvert.SerializeObject(ChatUpdatesOld));
+                    LocalFile.SaveTextToFile(ChatUpdatesFileName, JsonConvert.SerializeObject(ChatUpdatesOld));
                 }
             }
         }
