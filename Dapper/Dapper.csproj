@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3A671126-D499-4513-BEFB-9EC0C355C484}</ProjectGuid>
+    <ProjectGuid>{5B7DB3F1-EA3D-4FD3-B0B3-278C6DD14EA7}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>TelegramApp</RootNamespace>
-    <AssemblyName>TelegramApp</AssemblyName>
+    <RootNamespace>Dapper</RootNamespace>
+    <AssemblyName>Dapper</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,8 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Dapper, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.60.6\lib\net451\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -47,33 +47,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App.cs" />
-    <Compile Include="Commands\DafaultCommand.cs" />
-    <Compile Include="Commands\ShowAllEvents.cs" />
-    <Compile Include="Commands\ShowNewEvents.cs" />
-    <Compile Include="Dependency\ICommand.cs" />
-    <Compile Include="Dependency\IStorage.cs" />
-    <Compile Include="StorageClasses\JsonEventStorage.cs" />
+    <Compile Include="EventStorage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TelegramLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppDir\WorkWithFiles.csproj">
-      <Project>{8E8CF63C-8F61-487C-A3CD-59589ADD22D7}</Project>
-      <Name>WorkWithFiles</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DevByParser\DevByParser.csproj">
       <Project>{7bc3b0f0-b87f-4af6-9318-84bd8e42ae44}</Project>
       <Name>DevByParser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Telegram\Telegram.csproj">
-      <Project>{d4133fe8-9485-4723-8629-f872fcaaf337}</Project>
-      <Name>Telegram</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

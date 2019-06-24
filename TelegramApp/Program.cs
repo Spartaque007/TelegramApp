@@ -13,15 +13,12 @@ namespace TelegramApp
 {
     class Program
     {
-        static string ChatUpdatesFileName = "ChatUpdates.json";
+        
 
         static void Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.UTF8;
-            DevByParser devBy = new DevByParser();
-            Thread TrelegrammThread = new Thread(FollowTelegram);
-            TrelegrammThread.Start();
-
+           
+           
             while (true)
             {
 
@@ -30,12 +27,11 @@ namespace TelegramApp
 
             }
         }
-
         static async void FollowTelegram()
         {
             TelegramBot telegramBot = new TelegramBot();
-            telegramBot.GetNewEvents += JsonEventStorage.CheckNewEvents;
-            telegramBot.GetAllEvents += JsonEventStorage.GetAllEvents;
+            telegramBot.GetNewEvents += ;
+            telegramBot.GetAllEvents += BinaryEventStorage.GetAllEvents;
 
             TimerCallback checkEvents = new TimerCallback((object ob) =>
             {
@@ -59,6 +55,7 @@ namespace TelegramApp
             while (true)
             {
                 //Get All updates from local file
+                string ChatUpdatesFileName = ConfigurationManager.AppSettings["hatUpdatesFileName"];
                 string value = await AppDir.GetDataFromFile(ChatUpdatesFileName);
                 Updates ChatUpdatesOld = JsonConvert.DeserializeObject<Updates>(value) ?? new Updates();
 
@@ -85,6 +82,7 @@ namespace TelegramApp
                 }
             }
         }
-               
+
+
     }
 }
