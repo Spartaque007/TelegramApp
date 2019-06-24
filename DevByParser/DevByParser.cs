@@ -61,9 +61,6 @@ namespace DevBy
             Console.WriteLine("**********END OF GETTING EVENTS*********");
             return meetings;
         }
-        public List<EventObject> (GetNewEventsList<EventObject> prevEvents)
-        {
-            return (this.GetEvents().Except(prevEvents ?? new List<EventObject>())).ToList();
-        }
+        
     }
 }

@@ -1,17 +1,21 @@
-﻿using System;
+﻿using DevBy;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Telegram;
 using TelegramApp.Dependency;
 
 namespace TelegramApp.Commands
 {
     class ShowAllEvents : ICommand
     {
-        public void ExecuteCommand()
+
+        public void ExecuteCommand(Result result)
         {
-            Console.WriteLine("All Events");
+            DevByParser parser = new DevByParser();
+            
         }
     }
 }

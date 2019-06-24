@@ -49,6 +49,7 @@ namespace Telegram
             return client.GetStringAsync($"{Token }/sendMessage?chat_id={chatID}&text={message}").Result;
         }
         
+        
 
     }
 }

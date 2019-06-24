@@ -9,9 +9,9 @@ using TelegramApp.Dependency;
 
 namespace TelegramApp
 {
-    public class TelegramLogic
+    public class TelegramActions
     {
-        private ICommand GenerateAnswer(string message)
+        public ICommand PerformAnswer(string message)
         {
             
             if (message.ToUpper().Contains("@JONNWICKBOT"))
