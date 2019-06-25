@@ -55,11 +55,5 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AppDir\WorkWithFiles.csproj">
-      <Project>{8e8cf63c-8f61-487c-a3cd-59589add22d7}</Project>
-      <Name>WorkWithFiles</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

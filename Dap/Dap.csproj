@@ -56,10 +56,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppDir\WorkWithFiles.csproj">
-      <Project>{8e8cf63c-8f61-487c-a3cd-59589add22d7}</Project>
-      <Name>WorkWithFiles</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DevByParser\DevByParser.csproj">
       <Project>{7bc3b0f0-b87f-4af6-9318-84bd8e42ae44}</Project>
       <Name>DevByParser</Name>

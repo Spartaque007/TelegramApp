@@ -1,11 +1,6 @@
-﻿using DevBy;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Telegram;
 using TelegramApp.Dependency;
 
@@ -41,7 +36,5 @@ namespace TelegramApp
                 Storage.SaveUpdateToStorage((MaxUpdate + 1).ToString());
             }
         }
-
-
     }
 }
