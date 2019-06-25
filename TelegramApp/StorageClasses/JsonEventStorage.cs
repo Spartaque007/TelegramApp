@@ -1,41 +1,42 @@
 ﻿using DevBy;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
 using TelegramApp.Dependency;
 using WorkWithFiles;
 
 namespace TelegramApp
 {
-    public class JsonEventStorage :IStorage
-            {
-        
+    public class JsonEventStorage : IStorage
+    {
+        static string fileUpdates = ConfigurationManager.AppSettings["ChatUpdatesFileName"];
 
-        public static List<EventObject> GetEventsFromStorage(string UserFileName)
+        public List<EventObject> GetEventsFromStorage(string UserID)
         {
-            DevByParser parser = new DevByParser();
-            List<EventObject> currEvents = parser.GetEvents();
-            SaveEventsToFile(UserFileName, currEvents);
-            return currEvents;
-        }
+            string userFileName = GetUserFileName(UserID);
+            string textFromUserFile = LocalFile.GetDataFromFile(userFileName).Result;
+            return JsonConvert.DeserializeObject<List<EventObject>>(textFromUserFile);
 
-        public static void SaveEventsToFile(string UserFileName, List<EventObject> CurrEvents)
+        }
+        public void SaveEventsToStorage(string UserID, List<EventObject> CurrEvents)
         {
-            LocalFile.SaveTextToFile(UserFileName, JsonConvert.SerializeObject(CurrEvents));
+            string userFileName = GetUserFileName(UserID);
+            LocalFile.SaveTextToFile(userFileName, JsonConvert.SerializeObject(u));
         }
-
-        
         public string GetLastUpdateTelegramFromStorage()
         {
-            
+            string textFromUserFile = LocalFile.GetDataFromFile(fileUpdates).Result;
+            return JsonConvert.DeserializeObject<Update>(textFromUserFile).LastUpdateID;
         }
-
-        public void SaveEvents(List<EventObject> events)
+        public void SaveUpdateToStorage(string update)
         {
-           
+            LocalFile.SaveTextToFile(fileUpdates, update);
+
         }
+        private string GetUserFileName(string userID)
+        {
+            return $"Meetings_{userID}";
+        }
+               
     }
 }

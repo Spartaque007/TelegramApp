@@ -26,7 +26,6 @@ namespace TelegramApp
         public void Run()
         {
             Console.OutputEncoding = Encoding.UTF8;
-            string ChatUpdatesFileName = ConfigurationManager.AppSettings["ChatUpdatesFileName"];
             TelegramResponse ResponseFromTelegram = TelegramBot.GetUpdate(Storage.GetLastUpdateTelegramFromStorage());
             if (ResponseFromTelegram.result.Count > 0)
             {
