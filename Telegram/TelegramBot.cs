@@ -9,10 +9,8 @@ namespace Telegram
 {
     public class TelegramBot
     {
-        public delegate List<EventObject> GetNewEvent(string userFileName);
-        public event GetNewEvent GetNewEvents;
-        public event GetNewEvent GetAllEvents;
-        public delegate void BotSaveEvent(string UserFileName, List<EventObject> CurrEvents);
+        
+        public delegate void BotSaveEvent(string UserFileName, List<Event> CurrEvents);
         private static string Token = $@"https://api.telegram.org/{ConfigurationManager.AppSettings.Get("BotToken")}";
         private HttpClient client = new HttpClient();
         private static string myChatID = ConfigurationManager.AppSettings.Get("ChatMy ID");
@@ -37,6 +35,10 @@ namespace Telegram
         public string SendMessageMe(string message)
         {
             return client.GetStringAsync($"{Token }/sendMessage?chat_id={myChatID}&text={message}").Result;
+        }
+        public string SendMessageMeMD(string message)
+        {
+            return client.GetStringAsync($"{Token }/sendMessage?parse_mode=markdown&chat_id={myChatID}&text={message}").Result;
         }
         public string SendMessageGeneral(string message)
         {

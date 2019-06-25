@@ -10,10 +10,9 @@ namespace TelegramApp.Commands
 {
     public class DafaultCommand : ICommand
     {
-        
         public void ExecuteCommand(Result result)
         {
-            
+            Console.WriteLine("DefaultCommand");
         }
     }
 }

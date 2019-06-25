@@ -10,23 +10,22 @@ namespace TelegramApp
     public class JsonEventStorage : IStorage
     {
         static string fileUpdates = ConfigurationManager.AppSettings["ChatUpdatesFileName"];
-
-        public List<EventObject> GetEventsFromStorage(string UserID)
+        public List<Event> GetEventsFromStorage(string UserID)
         {
             string userFileName = GetUserFileName(UserID);
             string textFromUserFile = LocalFile.GetDataFromFile(userFileName).Result;
-            return JsonConvert.DeserializeObject<List<EventObject>>(textFromUserFile);
+            return JsonConvert.DeserializeObject<List<Event>>(textFromUserFile);
 
         }
-        public void SaveEventsToStorage(string UserID, List<EventObject> CurrEvents)
+        public void SaveEventsToStorage(string UserID, List<Event> CurrEvents)
         {
             string userFileName = GetUserFileName(UserID);
-            LocalFile.SaveTextToFile(userFileName, JsonConvert.SerializeObject(u));
+            LocalFile.SaveTextToFile(userFileName, JsonConvert.SerializeObject(userFileName));
         }
         public string GetLastUpdateTelegramFromStorage()
         {
-            string textFromUserFile = LocalFile.GetDataFromFile(fileUpdates).Result;
-            return JsonConvert.DeserializeObject<Update>(textFromUserFile).LastUpdateID;
+            return LocalFile.GetDataFromFile(fileUpdates).Result;
+            
         }
         public void SaveUpdateToStorage(string update)
         {

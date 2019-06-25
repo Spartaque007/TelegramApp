@@ -21,46 +21,29 @@ namespace DevBy
             clientParser.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
 
         }
-        private string GetResponse(int pages)   //getting respons in HTML format from host
+        public List<Event> GetEvents(int pages) 
         {
-                string data = "";
-                for (int i = 1; i <= pages; i++)
-                {
-                   data +=   clientParser.GetStringAsync($"{host}?page={i}").Result;
-
-                }
-            return data;
-        }
-        public  List<EventObject> GetEvents()
-        {
-            List<EventObject> meetings = new List<EventObject>();
-            string resp = GetResponse(Pages);
-            doc.LoadHtml(resp);
-            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//div[@class='list-item-events list-more']");
-
-            foreach (HtmlNode node in nodes)
+            List<Event> meetings = new List<Event>();
+            for (int i = 1; i <= pages; i++)
             {
-                for (int i = 0; i < node.ChildNodes.Count; i++)
-                {
-                    if (node.ChildNodes[i].NodeType == HtmlAgilityPack.HtmlNodeType.Text)
-                    {
-                        node.ChildNodes[i].Remove();
-                    }
-                }
+                string data = clientParser.GetStringAsync($"{host}?page={i}").Result;
+                doc.LoadHtml(data);
+                HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//div[@class='list-item-events list-more']//div[@class='item']");
 
-                for (int i = 0; i < node.ChildNodes.Count; i++)
+                for (int j = 0; j < nodes.Count; j++)
                 {
-                    string date = $"{ @Regex.Replace(node.ChildNodes[i].ChildNodes[1].InnerText, @"\s", " ")}";
-                    string name = $"{ @Regex.Replace(node.ChildNodes[i].ChildNodes[3].ChildNodes[1].InnerText, @"\s", " ")}";
-                    meetings.Add(new EventObject(name, date));
-
+                    HtmlNode dateText = nodes[j].SelectSingleNode("//time[@datetime]");
+                    DateTime date = DateTime.Parse(dateText.GetAttributeValue("datetime", null));
+                    HtmlNode UrlNode = nodes[j].SelectSingleNode(".//a[@class='title']");
+                    string url = UrlNode.GetAttributeValue("href", null);
+                    string name = UrlNode.GetAttributeValue("title", null);
+                    meetings.Add(new Event { EventName = name, EventURL = url, EverntDate = date });
                 }
 
             }
-
-            Console.WriteLine("**********END OF GETTING EVENTS*********");
             return meetings;
+           
         }
-        
     }
 }
+

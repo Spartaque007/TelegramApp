@@ -20,11 +20,11 @@ namespace TelegramApp
                 {
                    
                     case @"/SHOWEVENTS@JONNWICKBOT":
-                        return  new ShowNewEvents();
-                        
-                    case @"/SHOWNEWEVENTS@JONNWICKBOT":
                         return new ShowAllEvents();
-                        
+
+                    case @"/SHOWNEWEVENTS@JONNWICKBOT":
+                        return  new ShowNewEvents();
+
                 }
                
             }

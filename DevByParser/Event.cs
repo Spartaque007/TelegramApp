@@ -3,13 +3,14 @@
 namespace DevBy
 {
     [Serializable]
-    public class EventObject
+    public class Event
     {
 
-        private string date;
+        private DateTime date;
         private string name;
+        private string eventURL;
 
-        public string EverntDate
+        public DateTime EverntDate
         {
             get
             {
@@ -18,8 +19,7 @@ namespace DevBy
             set
             {
                 if (value != null) date = value;
-                else date = "No date";
-
+                else date = DateTime.MinValue ;
             }
         }
 
@@ -36,27 +36,41 @@ namespace DevBy
                 else name = "No name";
             }
         }
-        public EventObject()
+        public string EventURL
+        {
+            get
+            {
+                return eventURL;
+            }
+            set
+            {
+                if (value != null) eventURL = value;
+                else eventURL = "No URL";
+            }
+
+        }
+        public Event()
         {
             EventName = "No name";
-            EverntDate = "No date";
+            EverntDate = default;
+            eventURL = "No URL";
         }
-        public EventObject(string Name, string Date)
+        public Event(string Name, DateTime Date, string URL)
         {
             EventName = Name;
             EverntDate = Date;
+            EventURL = URL;
         }
 
         public override string ToString()
         {
             return $"Date : {EverntDate} Event: {EventName}";
         }
-
         public override bool Equals(Object obj)
         {
-            if (obj is EventObject && obj != null)
+            if (obj is Event && obj != null)
             {
-                EventObject Event_tmp = (EventObject)obj;
+                Event Event_tmp = (Event)obj;
 
                 if (Event_tmp.date == this.date && Event_tmp.name == this.name)
                 {

@@ -52,12 +52,14 @@
     <Compile Include="Commands\ShowAllEvents.cs" />
     <Compile Include="Commands\ShowNewEvents.cs" />
     <Compile Include="Dependency\ICommand.cs" />
+    <Compile Include="Dependency\ILogger.cs" />
     <Compile Include="Dependency\IStorage.cs" />
     <Compile Include="StorageClasses\LocalFile.cs" />
     <Compile Include="StorageClasses\JsonEventStorage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TelegramActions.cs" />
+    <Compile Include="Views\EventViews.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

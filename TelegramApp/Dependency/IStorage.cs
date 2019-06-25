@@ -9,8 +9,8 @@ namespace TelegramApp.Dependency
 {
     public interface IStorage
     {
-        void SaveEventsToStorage(string UserID, List<EventObject> CurrEvents);
-        List<EventObject> GetEventsFromStorage(string path);
+        void SaveEventsToStorage(string UserID, List<Event> CurrEvents);
+        List<Event> GetEventsFromStorage(string path);
         string GetLastUpdateTelegramFromStorage();
         void SaveUpdateToStorage(string update);
     }
