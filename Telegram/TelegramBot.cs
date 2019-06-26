@@ -37,13 +37,13 @@ namespace Telegram
         {
             return client.GetStringAsync($"{Token }/sendMessage?chat_id={myChatID}&text={message}").Result;
         }
-        public void SendMessageMeMD(string message)
+        public void SendMessageMDCustom(string message, int chatID)
         {
             string requestUri = $"{Token}/sendMessage";
 
             KeyValuePair<string, string>[] form = new[]
             {
-                new KeyValuePair<string, string>("chat_id", myChatID ),
+                new KeyValuePair<string, string>("chat_id", chatID.ToString() ),
                 new KeyValuePair<string, string>("text", message),
                 new KeyValuePair<string, string>("parse_mode", "markdown"),
                new KeyValuePair<string, string>("disable_web_page_preview", "true")

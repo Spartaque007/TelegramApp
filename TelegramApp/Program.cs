@@ -14,10 +14,9 @@ namespace TelegramApp
             Console.OutputEncoding = Encoding.UTF8;
             IStorage storage = new JsonEventStorage();
             TelegramBot bot = new TelegramBot();
-            App app = new App(ref storage, ref bot);
-            DevByParser a = new DevByParser();
-            EventViews ev = new EventViews();
-
+            EventViews viewer = new EventViews();
+            App app = new App(ref storage, ref bot,ref  viewer);
+           
             while (true)
             {
                 app.Run();

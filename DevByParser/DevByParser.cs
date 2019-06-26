@@ -21,7 +21,7 @@ namespace DevBy
             clientParser.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
 
         }
-        public List<Event> GetEvents(int pages) 
+        public List<Event> GetEvents(int pages)
         {
             List<Event> meetings = new List<Event>();
             for (int i = 1; i <= pages; i++)
@@ -37,12 +37,12 @@ namespace DevBy
                     HtmlNode UrlNode = nodes[j].SelectSingleNode(".//a[@class='title']");
                     string url = UrlNode.GetAttributeValue("href", null);
                     string name = UrlNode.InnerText;
-                    meetings.Add(new Event { EventName = name, EventURL = "https://events.dev.by"+url, EverntDate = date });
-                    }
+                    meetings.Add(new Event { EventName = name, EventURL = "https://events.dev.by" + url, EverntDate = date });
+                }
 
             }
             return meetings;
-           
+
         }
     }
 }

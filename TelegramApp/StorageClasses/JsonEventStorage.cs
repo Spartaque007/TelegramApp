@@ -20,7 +20,7 @@ namespace TelegramApp
         public void SaveEventsToStorage(string UserID, List<Event> CurrEvents)
         {
             string userFileName = GetUserFileName(UserID);
-            LocalFile.SaveTextToFile(userFileName, JsonConvert.SerializeObject(userFileName));
+            LocalFile.SaveTextToFile(userFileName, JsonConvert.SerializeObject(CurrEvents));
         }
         public string GetLastUpdateTelegramFromStorage()
         {

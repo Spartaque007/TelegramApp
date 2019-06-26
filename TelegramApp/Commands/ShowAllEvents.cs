@@ -8,16 +8,15 @@ namespace TelegramApp.Commands
 {
     class ShowAllEvents : ICommand
     {
-        public void ExecuteCommand(Result result,ref IStorage storage, ref TelegramBot bot, ref EventViews viewer)
+        public void ExecuteCommand(Result result, ref IStorage storage, ref TelegramBot bot, ref EventViews viewer)
         {
             DevByParser parser = new DevByParser();
             List<Event> currEvents = parser.GetEvents(2);
-            EventViews d = new EventViews();
+
             foreach (var sub in currEvents)
             {
-                bot.SendMessageMeMD(d.ToMdFormat(sub));
+                bot.SendMessageMDCustom(viewer.ToMdFormat(sub),result.message.chat.Id);
             }
-
         }
     }
 }

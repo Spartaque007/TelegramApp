@@ -5,7 +5,6 @@ namespace DevBy
     [Serializable]
     public class Event
     {
-
         private DateTime date;
         private string name;
         private string eventURL;
