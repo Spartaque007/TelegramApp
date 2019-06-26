@@ -39,7 +39,6 @@ namespace DevBy
                     string name = UrlNode.InnerText;
                     meetings.Add(new Event { EventName = name, EventURL = "https://events.dev.by" + url, EverntDate = date });
                 }
-
             }
             return meetings;
 
