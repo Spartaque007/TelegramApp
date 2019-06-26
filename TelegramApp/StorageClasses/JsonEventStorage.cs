@@ -14,7 +14,7 @@ namespace TelegramApp
         {
             string userFileName = GetUserFileName(UserID);
             string textFromUserFile = LocalFile.GetDataFromFile(userFileName).Result;
-            return JsonConvert.DeserializeObject<List<Event>>(textFromUserFile);
+            return JsonConvert.DeserializeObject<List<Event>>(textFromUserFile) ?? new List<Event>();
 
         }
         public void SaveEventsToStorage(string UserID, List<Event> CurrEvents)
@@ -34,7 +34,7 @@ namespace TelegramApp
         }
         private string GetUserFileName(string userID)
         {
-            return $"Meetings_{userID}";
+            return $"Meetings_{userID}.json";
         }
                
     }

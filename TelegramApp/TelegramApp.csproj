@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App.cs" />
+    <Compile Include="TelegramChecker.cs" />
     <Compile Include="Commands\DafaultCommand.cs" />
     <Compile Include="Commands\ShowAllEvents.cs" />
     <Compile Include="Commands\ShowNewEvents.cs" />
