@@ -29,7 +29,7 @@ namespace TelegramApp
                 {
                     Console.WriteLine($"Message from {result.message.from.first_name}\n" +
                         $"Message Text {result.message.text} \n{DateTime.Now.ToShortTimeString()}");
-                    operation.GetCommandFromMessage(result.message.text).ExecuteCommand(result);
+                    operation.GetCommandFromMessage(result.message.text).ExecuteCommand(result, ref Storage);
                 }
 
                 int MaxUpdate = ResponseFromTelegram.result.Max(X => X.update_id);

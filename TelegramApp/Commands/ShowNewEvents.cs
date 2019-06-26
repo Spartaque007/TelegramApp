@@ -1,18 +1,22 @@
-﻿using System;
+﻿using DevBy;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Telegram;
 using TelegramApp.Dependency;
+using TelegramApp.Views;
 
 namespace TelegramApp.Commands
 {
     class ShowNewEvents : ICommand
     {
-        public void ExecuteCommand(Result result)
+        public void ExecuteCommand(Result result,ref IStorage storage, ref TelegramBot bot, ref EventViews viewer)
         {
-            Console.WriteLine("Execute command ShowNewEvent");
+            DevByParser parser = new DevByParser();
+            List<Event> currEvents = parser.GetEvents(2);
+                        
+            foreach (var sub in currEvents)
+            {
+                bot.SendMessageMeMD(viewer.ToMdFormat(sub));
+            }
         }
     }
 }

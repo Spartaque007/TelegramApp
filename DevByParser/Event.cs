@@ -9,7 +9,6 @@ namespace DevBy
         private DateTime date;
         private string name;
         private string eventURL;
-
         public DateTime EverntDate
         {
             get
@@ -19,10 +18,9 @@ namespace DevBy
             set
             {
                 if (value != null) date = value;
-                else date = DateTime.MinValue ;
+                else date = DateTime.MinValue;
             }
         }
-
         public string EventName
         {
             get
@@ -64,7 +62,7 @@ namespace DevBy
 
         public override string ToString()
         {
-            return $"Date : {EverntDate} Event: {EventName}";
+            return $"{EverntDate}\n{EventName}";
         }
         public override bool Equals(Object obj)
         {

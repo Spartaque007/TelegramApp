@@ -21,9 +21,7 @@ namespace TelegramApp
             while (true)
             {
                 app.Run();
-                var c = a.GetEvents(1);
-                Console.WriteLine("Done");
-                Console.ReadKey();
+               
             }
         }
         //static async void FollowTelegram()

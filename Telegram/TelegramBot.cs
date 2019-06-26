@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Net;
 using System.Net.Http;
 
 
@@ -9,7 +10,7 @@ namespace Telegram
 {
     public class TelegramBot
     {
-        
+
         public delegate void BotSaveEvent(string UserFileName, List<Event> CurrEvents);
         private static string Token = $@"https://api.telegram.org/{ConfigurationManager.AppSettings.Get("BotToken")}";
         private HttpClient client = new HttpClient();
@@ -36,10 +37,20 @@ namespace Telegram
         {
             return client.GetStringAsync($"{Token }/sendMessage?chat_id={myChatID}&text={message}").Result;
         }
-        public string SendMessageMeMD(string message)
+        public void SendMessageMeMD(string message)
         {
-            return client.GetStringAsync($"{Token }/sendMessage?parse_mode=markdown&chat_id={myChatID}&text={message}").Result;
+            string requestUri = $"{Token}/sendMessage";
+
+            KeyValuePair<string, string>[] form = new[]
+            {
+                new KeyValuePair<string, string>("chat_id", myChatID ),
+                new KeyValuePair<string, string>("text", message),
+                new KeyValuePair<string, string>("parse_mode", "markdown"),
+               new KeyValuePair<string, string>("disable_web_page_preview", "true")
+            };
+            var httpResponseMessage = client.PostAsync(requestUri, new FormUrlEncodedContent(form)).Result;
         }
+       
         public string SendMessageGeneral(string message)
         {
 
@@ -50,8 +61,8 @@ namespace Telegram
 
             return client.GetStringAsync($"{Token }/sendMessage?chat_id={chatID}&text={message}").Result;
         }
-        
-        
+
+
 
     }
 }

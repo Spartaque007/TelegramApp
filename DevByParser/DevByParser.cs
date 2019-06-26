@@ -36,9 +36,9 @@ namespace DevBy
                     DateTime date = DateTime.Parse(dateText.GetAttributeValue("datetime", null));
                     HtmlNode UrlNode = nodes[j].SelectSingleNode(".//a[@class='title']");
                     string url = UrlNode.GetAttributeValue("href", null);
-                    string name = UrlNode.GetAttributeValue("title", null);
-                    meetings.Add(new Event { EventName = name, EventURL = url, EverntDate = date });
-                }
+                    string name = UrlNode.InnerText;
+                    meetings.Add(new Event { EventName = name, EventURL = "https://events.dev.by"+url, EverntDate = date });
+                    }
 
             }
             return meetings;
