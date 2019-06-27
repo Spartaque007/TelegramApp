@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.IO;
 using System.Threading.Tasks;
+using TelegramApp.Dependency;
 
 namespace WorkWithFiles
 {
@@ -13,13 +14,11 @@ namespace WorkWithFiles
         {
             if (!Directory.Exists(Dir))
             {
-                Console.WriteLine("Config folder is not found, but I took care of it and created it ");
                 Directory.CreateDirectory(Dir);
                 return false;
             }
             else
             {
-                Console.WriteLine("Directory is OK");
                 return true;
             }
         }
@@ -35,7 +34,6 @@ namespace WorkWithFiles
             catch (FileNotFoundException)
             {
                 using (FileStream fs = File.Create($@"{Dir}\{name}")) { }
-                Console.WriteLine($"file is not found, but I created her ");
                 return false;
             }
         }

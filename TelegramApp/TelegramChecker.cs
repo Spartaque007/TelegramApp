@@ -16,11 +16,13 @@ namespace TelegramApp
         private IStorage storage;
         private TelegramBot telegramBot;
         private EventViews viewer;
-        public TelegramChecker(ref IStorage storage, ref TelegramBot bot, ref EventViews viewer)
+        private ILoger loger;
+        public TelegramChecker(ref IStorage storage, ref TelegramBot bot, ref EventViews viewer, ref ILoger loger)
         {
             this.storage = storage;
             this.telegramBot = bot;
             this.viewer = viewer;
+            this.loger = loger;
         }
 
         public void Run()
@@ -40,7 +42,7 @@ namespace TelegramApp
 
                     foreach (var result in ResponseFromTelegram.result)
                     {
-                        Console.WriteLine($"Message from {result.message.from.first_name}\n" +
+                        loger.WriteLog($"Message from {result.message.from.first_name}\n" +
                             $"Message Text {result.message.text} \n{DateTime.Now.ToShortTimeString()}");
                         operation.GetCommandFromMessage(result.message.text).ExecuteCommand(result, ref storage, ref telegramBot, ref viewer);
                     }
@@ -58,8 +60,12 @@ namespace TelegramApp
                         telegramBot.SendMessageMDCustom(viewer.ToMdFormat(@event),
                             int.Parse(ConfigurationManager.AppSettings.Get("ChatGeneral ID")));
                     }
-                    storage.SaveEventsToStorage("0", currEvents);
-                    Console.WriteLine("TimerFlag");
+                    if(newEvents.Count>0)
+                    {
+                        storage.SaveEventsToStorage("0", currEvents);
+                        loger.WriteLog("TimerFlag");
+                    }
+                    
                     timerFlag = false;
                 }
 

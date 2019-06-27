@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace TelegramApp.Dependency
 {
-    public interface ILogger
+    public interface ILoger
     {
-       void WriteLog();
+       void WriteLog(string logInformation);
     }
 }

@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.60.6\lib\net451\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -47,15 +50,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logers\ConsoleLoger.cs" />
+    <Compile Include="StorageClasses\DapStorageDB.cs" />
     <Compile Include="TelegramChecker.cs" />
     <Compile Include="Commands\DafaultCommand.cs" />
     <Compile Include="Commands\ShowAllEvents.cs" />
     <Compile Include="Commands\ShowNewEvents.cs" />
     <Compile Include="Dependency\ICommand.cs" />
-    <Compile Include="Dependency\ILogger.cs" />
+    <Compile Include="Dependency\ILoger.cs" />
     <Compile Include="Dependency\IStorage.cs" />
     <Compile Include="StorageClasses\LocalFile.cs" />
-    <Compile Include="StorageClasses\JsonEventStorage.cs" />
+    <Compile Include="StorageClasses\JsonStorage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TelegramActions.cs" />
@@ -75,5 +80,6 @@
       <Name>Telegram</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

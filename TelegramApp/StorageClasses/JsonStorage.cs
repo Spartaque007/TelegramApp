@@ -7,7 +7,7 @@ using WorkWithFiles;
 
 namespace TelegramApp
 {
-    public class JsonEventStorage : IStorage
+    public class JsonStorage : IStorage
     {
         static string fileUpdates = ConfigurationManager.AppSettings["ChatUpdatesFileName"];
         public List<Event> GetEventsFromStorage(string UserID)
@@ -15,7 +15,6 @@ namespace TelegramApp
             string userFileName = GetUserFileName(UserID);
             string textFromUserFile = LocalFile.GetDataFromFile(userFileName).Result;
             return JsonConvert.DeserializeObject<List<Event>>(textFromUserFile) ?? new List<Event>();
-
         }
         public void SaveEventsToStorage(string UserID, List<Event> CurrEvents)
         {
@@ -25,7 +24,7 @@ namespace TelegramApp
         public string GetLastUpdateTelegramFromStorage()
         {
             return LocalFile.GetDataFromFile(fileUpdates).Result;
-            
+
         }
         public void SaveUpdateToStorage(string update)
         {
@@ -36,6 +35,5 @@ namespace TelegramApp
         {
             return $"Meetings_{userID}.json";
         }
-               
     }
 }
