@@ -49,14 +49,14 @@ namespace TelegramApp.StorageClasses
                     db.ConnectionString = ConfigurationManager.ConnectionStrings["DBconnectionString"].ConnectionString;
                     string sqlQuery = $"CREATE DATABASE {dBname}";
                     db.Execute(sqlQuery);
-                    loger.WriteLog("Database not found, but I created her");
+                    loger.WriteLog($"Database {dBname} not found, but I created her");
 
 
 
                 }
                 catch (SqlException ex)
                 {
-                    loger.WriteLog($"DB check errror!!! ex.LineNumber == {ex.LineNumber}");
+                    loger.WriteLog($"DB {dBname} check errror!!! ex.LineNumber == {ex.LineNumber}");
 
                 }
             }
@@ -64,6 +64,7 @@ namespace TelegramApp.StorageClasses
             {
                 try
                 {
+                    
                     string sqlQuery = $"Select top 1 * from {eventListTableName} ";
                     db.Execute(sqlQuery);
                 }
@@ -80,7 +81,7 @@ namespace TelegramApp.StorageClasses
                 }
                 catch (SqlException ex)
                 {
-                    loger.WriteLog($"Table check errror!!! ex.LineNumber == {ex.LineNumber}");
+                    loger.WriteLog($"Table {eventListTableName} check errror!!! ex.LineNumber == {ex.LineNumber}");
 
                 }
 
