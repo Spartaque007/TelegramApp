@@ -5,10 +5,10 @@ namespace DevBy
     [Serializable]
     public class Event
     {
-        private DateTime date;
+        private string date;
         private string name;
         private string eventURL;
-        public DateTime EverntDate
+        public string EverntDate
         {
             get
             {
@@ -17,7 +17,7 @@ namespace DevBy
             set
             {
                 if (value != null) date = value;
-                else date = DateTime.MinValue;
+                else date = "No date";
             }
         }
         public string EventName
@@ -52,7 +52,7 @@ namespace DevBy
             EverntDate = default;
             eventURL = "No URL";
         }
-        public Event(string Name, DateTime Date, string URL)
+        public Event(string Name, string Date, string URL)
         {
             EventName = Name;
             EverntDate = Date;

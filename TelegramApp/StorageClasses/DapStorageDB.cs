@@ -31,6 +31,7 @@ namespace TelegramApp.StorageClasses
         public void SaveEventsToStorage(string UserID, List<Event> CurrEvents)
         {
 
+
         }
         public void SaveUpdateToStorage(string update)
         {

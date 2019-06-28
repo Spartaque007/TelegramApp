@@ -32,8 +32,8 @@ namespace DevBy
 
                 for (int j = 0; j < nodes.Count; j++)
                 {
-                    HtmlNode dateText = nodes[j].SelectSingleNode("//time[@datetime]");
-                    DateTime date = DateTime.Parse(dateText.GetAttributeValue("datetime", null));
+                    HtmlNode dateText = nodes[j].SelectSingleNode("//p/time");
+                    string date = dateText.InnerText;
                     HtmlNode UrlNode = nodes[j].SelectSingleNode(".//a[@class='title']");
                     string url = UrlNode.GetAttributeValue("href", null);
                     string name = UrlNode.InnerText;
