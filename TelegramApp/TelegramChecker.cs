@@ -52,13 +52,17 @@ namespace TelegramApp
                     DevByParser parser = new DevByParser();
                     List<Event> currEvents = parser.GetEvents(2);
                     List<Event> prevEvents = storage.GetEventsFromStorage("0");
-                    List<Event> newEvents = currEvents.Except(prevEvents).ToList<Event>();
-                    foreach (var @event in newEvents)
+                    List<Event> newEvents = new List<Event>();
+                    if (prevEvents.Capacity != 0)
                     {
-                        telegramBot.SendMessageMDCustom(viewer.ToMdFormat(@event),
-                            int.Parse(ConfigurationManager.AppSettings.Get("ChatGeneral ID")));
+                        newEvents = currEvents.Except(prevEvents).ToList<Event>();
+                        foreach (var @event in newEvents)
+                        {
+                            telegramBot.SendMessageMDCustom(viewer.ToMdFormat(@event),
+                                int.Parse(ConfigurationManager.AppSettings.Get("ChatGeneral ID")));
+                            storage.SaveEventsToStorage("0", currEvents);
+                        }
                     }
-                    storage.SaveEventsToStorage("0", currEvents);
                     Console.WriteLine("TimerFlag");
                     timerFlag = false;
                 }
