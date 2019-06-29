@@ -35,5 +35,10 @@ namespace TelegramApp
         {
             return $"Meetings_{userID}.json";
         }
+
+        public List<Event> GetEventsFromStorageForUser(string userID)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

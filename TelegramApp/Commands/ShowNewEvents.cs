@@ -13,7 +13,7 @@ namespace TelegramApp.Commands
         {
             DevByParser parser = new DevByParser();
             List<Event> currEvents = parser.GetEvents(2);
-            List<Event> prevrEvents = storage.GetEventsFromStorage(result.message.from.ID.ToString()) ?? new List<Event>();
+            List<Event> prevrEvents = storage.GetEventsFromStorageForUser(result.message.from.ID.ToString()) ?? new List<Event>();
             List<Event> newEvents = currEvents.Except(prevrEvents).ToList<Event>();
 
             if (newEvents.Capacity > 0)

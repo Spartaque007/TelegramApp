@@ -55,7 +55,7 @@ namespace TelegramApp
                     {
                         DevByParser parser = new DevByParser();
                         List<Event> currEvents = parser.GetEvents(2);
-                        List<Event> prevEvents = storage.GetEventsFromStorage("0");
+                        List<Event> prevEvents = storage.GetEventsFromStorageForUser("0");
                         List<Event> newEvents = currEvents.Except(prevEvents).ToList<Event>();
                         foreach (var @event in newEvents)
                         {

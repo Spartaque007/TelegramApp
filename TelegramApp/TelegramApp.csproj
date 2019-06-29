@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Logers\ConsoleLoger.cs" />
     <Compile Include="StorageClasses\DapStorageDB.cs" />
+    <Compile Include="StorageClasses\DdModels\User.cs" />
     <Compile Include="TelegramChecker.cs" />
     <Compile Include="Commands\DafaultCommand.cs" />
     <Compile Include="Commands\ShowAllEvents.cs" />

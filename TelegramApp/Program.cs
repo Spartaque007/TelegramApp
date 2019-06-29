@@ -8,6 +8,7 @@ using System.Threading;
 using TelegramApp.StorageClasses;
 using TelegramApp.Logers;
 using System.Net;
+using System.Collections.Generic;
 
 namespace TelegramApp
 {
@@ -41,7 +42,10 @@ namespace TelegramApp
             DapStorageDB storage = new DapStorageDB(ref loger);
             storage.CheckDatabase("TelegramApp");
             DevByParser A = new DevByParser();
-            A.GetEvents(1);
+            List<Event>currEvents= A.GetEvents(1);
+            storage.SaveEventsToStorage("0",currEvents);
+            storage.CheckUserInDb("0");
+            storage.GetLastUpdateTelegramFromStorage();
             Console.Beep();
             Console.ReadKey();
 

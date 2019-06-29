@@ -8,7 +8,8 @@ namespace DevBy
         private string date;
         private string name;
         private string eventURL;
-        public string EverntDate
+        
+        public string EventDate
         {
             get
             {
@@ -46,22 +47,23 @@ namespace DevBy
             }
 
         }
+        public string EventAddDate { get; set; } = DateTime.Now.ToString();
         public Event()
         {
             EventName = "No name";
-            EverntDate = default;
+            EventDate = default;
             eventURL = "No URL";
         }
         public Event(string Name, string Date, string URL)
         {
             EventName = Name;
-            EverntDate = Date;
+            EventDate = Date;
             EventURL = URL;
         }
 
         public override string ToString()
         {
-            return $"{EverntDate}\n{EventName}";
+            return $"{EventDate}\n{EventName}";
         }
         public override bool Equals(Object obj)
         {
