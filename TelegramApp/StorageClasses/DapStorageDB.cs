@@ -89,7 +89,7 @@ namespace TelegramApp.StorageClasses
 
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))
             {
-                string sqlQuery = $"Update {updatesTableName} set update = '{update}'";
+                string sqlQuery = $"Update {updatesTableName} set LastUpdate = '{update}'";
                 db.Execute(sqlQuery);
             }
         }

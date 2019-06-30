@@ -29,7 +29,7 @@ namespace TelegramApp
         {
             try
             {
-                Timer timer = new Timer(10000);
+                Timer timer = new Timer(600000);
                 timer.AutoReset = true;
                 bool timerFlag = false;
                 timer.Elapsed += (x, y) => timerFlag = true;
@@ -57,10 +57,13 @@ namespace TelegramApp
                         List<Event> currEvents = parser.GetEvents(2);
                         storage.SaveNewEventsToStorage(currEvents);
                         List<Event> newEvents = storage.GetNewEventsFromStorageForUser("0");
-                        foreach (var @event in newEvents)
+                        if (newEvents.Count > 0)
                         {
-                            telegramBot.SendMessageMDCustom(viewer.ToMdFormat(@event),
-                                int.Parse(ConfigurationManager.AppSettings.Get("ChatGeneral ID")));
+                            foreach (var @event in newEvents)
+                            {
+                                telegramBot.SendMessageMDCustom(viewer.ToMdFormat(@event),
+                                    int.Parse(ConfigurationManager.AppSettings.Get("ChatGeneral ID")));
+                            }
                         }
                         timerFlag = false;
                     }
@@ -72,8 +75,9 @@ namespace TelegramApp
                 foreach (var x in ex.InnerExceptions)
                 {
                     loger.WriteLog(x.ToString());
+                    telegramBot.SendMessageMe(x.ToString());
                 }
-                             
+
             }
         }
     }

@@ -18,12 +18,12 @@ namespace TelegramApp
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ILoger loger = new ConsoleLoger();
+            TelegramBot bot = new TelegramBot();
+            IStorage storage = new DapStorageDB(ref loger);
+            EventViews viewer = new EventViews();
             try
             {
-                IStorage storage = new JsonStorage();
-                TelegramBot bot = new TelegramBot();
-                EventViews viewer = new EventViews();
-                ILoger loger = new ConsoleLoger();
                 TelegramChecker telegramBot = new TelegramChecker(ref storage, ref bot, ref viewer, ref loger);
                 Thread telegramChecker = new Thread(telegramBot.Run);
                 telegramChecker.Start();
@@ -32,13 +32,11 @@ namespace TelegramApp
             {
                 foreach (var x in ex.InnerExceptions)
                 {
-                    Console.WriteLine(x.Message);
+                    loger.WriteLog(x.Message);
+                    bot.SendMessageMe(x.Message);
                 }
-
                 Console.ReadKey();
             }
-
-
         }
 
     }
