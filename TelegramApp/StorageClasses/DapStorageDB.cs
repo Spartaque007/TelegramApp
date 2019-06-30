@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -65,7 +64,6 @@ namespace TelegramApp.StorageClasses
             }
 
         }
-
         public string GetLastUpdateTelegramFromStorage()
         {
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))
@@ -191,7 +189,6 @@ namespace TelegramApp.StorageClasses
                 }
             }
         }
-
         public void SaveUserCheckDate(string userId)
         {
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))

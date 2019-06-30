@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Text;
 using Telegram;
-using DevBy;
 using TelegramApp.Dependency;
 using TelegramApp.Views;
 using System.Threading;
