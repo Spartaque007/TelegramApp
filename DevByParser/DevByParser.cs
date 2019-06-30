@@ -1,8 +1,6 @@
 ﻿using System.Configuration;
 using HtmlAgilityPack;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 
@@ -19,7 +17,6 @@ namespace DevBy
         {
             clientParser.DefaultRequestHeaders.Add("Accept", "text/html, */*; q=0.01");
             clientParser.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
-
         }
         public List<Event> GetEvents(int pages)
         {
@@ -32,8 +29,7 @@ namespace DevBy
 
                 for (int j = 0; j < nodes.Count; j++)
                 {
-                    
-                    string date = Regex.Replace(nodes[j].SelectSingleNode(".//p/time").InnerText,"\n"," ");
+                    string date = Regex.Replace(nodes[j].SelectSingleNode(".//p/time").InnerText, "\n", " ");
                     HtmlNode UrlNode = nodes[j].SelectSingleNode(".//a[@class='title']");
                     string url = UrlNode.GetAttributeValue("href", null);
                     string name = UrlNode.InnerText;
