@@ -44,7 +44,7 @@ namespace TelegramApp
 
                         foreach (var result in ResponseFromTelegram.result)
                         {
-                            loger.WriteLog($"Message from {result.message.from.first_name}\n" +
+                            loger.WriteLog($"Message from {result.message.from.username}\n" +
                                 $"Message Text {result.message.text} \n{DateTime.Now.ToShortTimeString()}");
                             operation.GetCommandFromMessage(result.message.text).ExecuteCommand(result, ref storage, ref telegramBot, ref viewer);
                         }
@@ -67,7 +67,6 @@ namespace TelegramApp
                         }
                         timerFlag = false;
                     }
-
                 }
             }
             catch (AggregateException ex)
@@ -77,7 +76,6 @@ namespace TelegramApp
                     loger.WriteLog(x.ToString());
                     telegramBot.SendMessageMe(x.ToString());
                 }
-
             }
         }
     }

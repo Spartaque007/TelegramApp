@@ -14,6 +14,7 @@ namespace TelegramApp
     {
         static void Main(string[] args)
         {
+            Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ILoger loger = new ConsoleLoger();

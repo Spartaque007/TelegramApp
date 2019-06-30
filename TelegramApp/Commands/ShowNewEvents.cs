@@ -13,9 +13,8 @@ namespace TelegramApp.Commands
             DevByParser parser = new DevByParser();
             List<Event> currEvents = parser.GetEvents(2);
             storage.SaveNewEventsToStorage(currEvents);
-            storage.SaveUserCheckDate(result.message.from.ID.ToString());
             List<Event> newEvents = storage.GetNewEventsFromStorageForUser(result.message.from.ID.ToString());
-
+            storage.SaveUserCheckDate(result.message.from.ID.ToString());
             if (newEvents.Capacity > 0)
             {
                 foreach (var sub in newEvents)
