@@ -7,7 +7,7 @@ using System.Linq;
 using Dapper;
 using DevBy;
 using TelegramApp.Dependency;
-using TelegramApp.StorageClasses.DdModels;
+
 
 namespace TelegramApp.StorageClasses
 {
@@ -31,51 +31,41 @@ namespace TelegramApp.StorageClasses
                 List<Event> events = db.Query<Event>(sqlQuery).ToList();
                 return events;
             }
-
         }
         public void SaveEventsToStorage(string UserID, List<Event> currEvents)
         {
-            DeleteOldEventsFromStorage(currEvents);
+            DeleteOldEventsFromStorageAndAddNew(currEvents);
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))
             {
                 string sqlQuery;
-                List<Event> prevEvents = this.GetEventsFromStorageForUser(UserID);
-                List<Event> newEvents = currEvents.Except(prevEvents).ToList();
+                CheckUserInDb(UserID);
+                sqlQuery = $@"Update {usersTableName} Set LastUpdate = GETDATE() where UserID='{UserID}'";
+                db.Execute(sqlQuery);
+            }
+        }
+        private void DeleteOldEventsFromStorageAndAddNew(List<Event> currEvents)
+        {
+            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))
+            {
+                string sqlQuery = $"Select *,EventLink as EventURL from {eventsTableName}";
+                List<Event> events = db.Query<Event>(sqlQuery).ToList();
+                List<Event> nonActualEvents = events.Except(currEvents).ToList();
+                if (nonActualEvents.Count > 0)
+                {
+                    foreach (var item in nonActualEvents)
+                    {
+                        sqlQuery = $"Delete from {eventsTableName} where EventName='{item.EventName}'";
+                        db.Execute(sqlQuery);
+                    }
+                }
+                List<Event> eventsAfterCleaning =  db.Query<Event>(sqlQuery).ToList();
+                List<Event> newEvents = currEvents.Except(eventsAfterCleaning).ToList();
                 if (newEvents.Count > 0)
                 {
                     foreach (var e in newEvents)
                     {
                         sqlQuery = $@"Insert into {eventsTableName} (EventName, EventDate, EventLink)
                                          values (N'{e.EventName}',N'{e.EventDate}','{e.EventURL}')";
-                        db.Execute(sqlQuery);
-                    }
-                }
-                CheckUserInDb(UserID);
-                sqlQuery = $@"Update {usersTableName} Set LastUpdate = GETDATE() where UserID='{UserID}'";
-                db.Execute(sqlQuery);
-            }
-        }
-        private string GetDateOfLastUpdateForUser(string userID)
-        {
-            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))
-            {
-                string sqlQuery = $"Select LastUpdate from {usersTableName} where UserId= {userID} ";
-                return db.Query<string>(sqlQuery).FirstOrDefault();
-            }
-
-        }
-        private void DeleteOldEventsFromStorage(List<Event> currEvents)
-        {
-            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))
-            {
-                string sqlQuery = $"Select *,EventLink as EventURL from {eventsTableName}";
-                List<Event> events = db.Query<Event>(sqlQuery).ToList();
-                List<Event> diffEvents = currEvents.Except(events).ToList();
-                if (diffEvents.Count > 0)
-                {
-                    foreach (var item in diffEvents)
-                    {
-                        sqlQuery = $"Delete from {eventsTableName} where EventName='{item.EventName}'";
                         db.Execute(sqlQuery);
                     }
                 }

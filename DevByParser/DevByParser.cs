@@ -28,12 +28,11 @@ namespace DevBy
             {
                 string data = clientParser.GetStringAsync($"{host}?page={i}").Result;
                 doc.LoadHtml(data);
-                HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//div[@class='list-item-events list-more']//div[@class='item']");
+                HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//div[@class='list-item-events list-more']/div[@class='item']");
 
                 for (int j = 0; j < nodes.Count; j++)
                 {
-                    HtmlNode dateText = nodes[j].SelectSingleNode("//p/time");
-                    string date = dateText.InnerText;
+                    string date = nodes[j].SelectSingleNode(".//p/time").InnerText;
                     HtmlNode UrlNode = nodes[j].SelectSingleNode(".//a[@class='title']");
                     string url = UrlNode.GetAttributeValue("href", null);
                     string name = UrlNode.InnerText;
