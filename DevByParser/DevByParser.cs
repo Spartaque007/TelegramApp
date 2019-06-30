@@ -32,7 +32,8 @@ namespace DevBy
 
                 for (int j = 0; j < nodes.Count; j++)
                 {
-                    string date = nodes[j].SelectSingleNode(".//p/time").InnerText;
+                    
+                    string date = Regex.Replace(nodes[j].SelectSingleNode(".//p/time").InnerText,"\n"," ");
                     HtmlNode UrlNode = nodes[j].SelectSingleNode(".//a[@class='title']");
                     string url = UrlNode.GetAttributeValue("href", null);
                     string name = UrlNode.InnerText;

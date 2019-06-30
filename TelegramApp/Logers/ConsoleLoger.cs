@@ -9,6 +9,12 @@ namespace TelegramApp.Logers
 {
     class ConsoleLoger : ILoger
     {
+        public ConsoleLoger()
+        {
+            Console.OutputEncoding = Encoding.UTF8;
+
+        }
+        
         public void WriteLog(string logText)
         {
             Console.WriteLine(logText);

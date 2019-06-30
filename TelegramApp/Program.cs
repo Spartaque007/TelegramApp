@@ -16,38 +16,28 @@ namespace TelegramApp
     {
         static void Main(string[] args)
         {
-            //    ServicePointManager.Expect100Continue = true;
-            //    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            //    try
-            //    {
-            //        Console.OutputEncoding = Encoding.UTF8;
-            //        IStorage storage = new JsonStorage();
-            //        TelegramBot bot = new TelegramBot();
-            //        EventViews viewer = new EventViews();
-            //        ILoger loger = new ConsoleLoger();
-            //        TelegramChecker telegramBot = new TelegramChecker(ref storage, ref bot, ref viewer, ref loger);
-            //        Thread telegramChecker = new Thread(telegramBot.Run);
-            //        telegramChecker.Start();
-            //    }
-            //    catch (AggregateException ex)
-            //    {
-            //        foreach (var x in ex.InnerExceptions)
-            //        {
-            //            Console.WriteLine(x.Message);
-            //        }
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            try
+            {
+                IStorage storage = new JsonStorage();
+                TelegramBot bot = new TelegramBot();
+                EventViews viewer = new EventViews();
+                ILoger loger = new ConsoleLoger();
+                TelegramChecker telegramBot = new TelegramChecker(ref storage, ref bot, ref viewer, ref loger);
+                Thread telegramChecker = new Thread(telegramBot.Run);
+                telegramChecker.Start();
+            }
+            catch (AggregateException ex)
+            {
+                foreach (var x in ex.InnerExceptions)
+                {
+                    Console.WriteLine(x.Message);
+                }
 
-            //        Console.ReadKey();
-            //    }
-            ILoger loger = new ConsoleLoger();
-            DapStorageDB storage = new DapStorageDB(ref loger);
-            storage.CheckDatabase("TelegramApp");
-            DevByParser A = new DevByParser();
-            List<Event>currEvents= A.GetEvents(1);
-            storage.SaveEventsToStorage("0",currEvents);
-            storage.CheckUserInDb("0");
-            storage.GetLastUpdateTelegramFromStorage();
-            Console.Beep();
-            Console.ReadKey();
+                Console.ReadKey();
+            }
+
 
         }
 

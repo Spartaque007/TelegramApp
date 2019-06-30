@@ -21,29 +21,22 @@ namespace TelegramApp.StorageClasses
         public DapStorageDB(ref ILoger loger)
         {
             this.loger = loger;
+            CheckDatabase();
         }
-        public List<Event> GetEventsFromStorageForUser(string userID)
+        public List<Event> GetNewEventsFromStorageForUser(string userID)
         {
+            CheckUserInDb(userID);
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))
             {
                 string sqlQuery = $"Select *,EventLink as EventURL from {eventsTableName} where EventAddDate> " +
                     $"(select LastUpdate from UsersList where UserId='{userID}')";
                 List<Event> events = db.Query<Event>(sqlQuery).ToList();
+                sqlQuery = $@"Update {usersTableName} Set LastUpdate = GETDATE() where UserID='{userID}'";
+                db.Execute(sqlQuery);
                 return events;
             }
         }
-        public void SaveEventsToStorage(string UserID, List<Event> currEvents)
-        {
-            DeleteOldEventsFromStorageAndAddNew(currEvents);
-            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))
-            {
-                string sqlQuery;
-                CheckUserInDb(UserID);
-                sqlQuery = $@"Update {usersTableName} Set LastUpdate = GETDATE() where UserID='{UserID}'";
-                db.Execute(sqlQuery);
-            }
-        }
-        private void DeleteOldEventsFromStorageAndAddNew(List<Event> currEvents)
+        public void SaveNewEventsToStorage(List<Event> currEvents)
         {
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))
             {
@@ -58,7 +51,7 @@ namespace TelegramApp.StorageClasses
                         db.Execute(sqlQuery);
                     }
                 }
-                List<Event> eventsAfterCleaning =  db.Query<Event>(sqlQuery).ToList();
+                List<Event> eventsAfterCleaning = db.Query<Event>(sqlQuery).ToList();
                 List<Event> newEvents = currEvents.Except(eventsAfterCleaning).ToList();
                 if (newEvents.Count > 0)
                 {
@@ -72,6 +65,7 @@ namespace TelegramApp.StorageClasses
             }
 
         }
+
         public string GetLastUpdateTelegramFromStorage()
         {
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))
@@ -90,16 +84,16 @@ namespace TelegramApp.StorageClasses
                 }
             }
         }
-        public void SaveUpdateToStorage(string update)
+        public void SaveTelegramUpdateToStorage(string update)
         {
 
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))
             {
-               string sqlQuery = $"Update {updatesTableName} set update = '{update}'";
+                string sqlQuery = $"Update {updatesTableName} set update = '{update}'";
                 db.Execute(sqlQuery);
             }
         }
-        public void CheckDatabase(string nameDB)
+        public void CheckDatabase()
         {
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))
             {
@@ -198,7 +192,14 @@ namespace TelegramApp.StorageClasses
             }
         }
 
-
+        public void SaveUserCheckDate(string userId)
+        {
+            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["TelegramApp"].ConnectionString))
+            {
+                string sqlQuery = $@"Update {usersTableName} Set LastUpdate = GETDATE() where UserID='{userId}'";
+                db.Execute(sqlQuery);
+            }
+        }
     }
 }
 

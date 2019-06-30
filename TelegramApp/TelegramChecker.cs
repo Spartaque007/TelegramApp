@@ -49,39 +49,31 @@ namespace TelegramApp
                             operation.GetCommandFromMessage(result.message.text).ExecuteCommand(result, ref storage, ref telegramBot, ref viewer);
                         }
                         int MaxUpdate = ResponseFromTelegram.result.Max(X => X.update_id);
-                        storage.SaveUpdateToStorage((MaxUpdate + 1).ToString());
+                        storage.SaveTelegramUpdateToStorage((MaxUpdate + 1).ToString());
                     }
                     if (timerFlag)
                     {
                         DevByParser parser = new DevByParser();
                         List<Event> currEvents = parser.GetEvents(2);
-                        List<Event> prevEvents = storage.GetEventsFromStorageForUser("0");
-                        List<Event> newEvents = currEvents.Except(prevEvents).ToList<Event>();
+                        storage.SaveNewEventsToStorage(currEvents);
+                        List<Event> newEvents = storage.GetNewEventsFromStorageForUser("0");
                         foreach (var @event in newEvents)
                         {
                             telegramBot.SendMessageMDCustom(viewer.ToMdFormat(@event),
                                 int.Parse(ConfigurationManager.AppSettings.Get("ChatGeneral ID")));
                         }
-                        if (newEvents.Count > 0)
-                        {
-                            storage.SaveEventsToStorage("0", currEvents);
-                            loger.WriteLog("TimerFlag");
-                        }
-
                         timerFlag = false;
                     }
 
                 }
             }
-   
-            catch(AggregateException ex)
+            catch (AggregateException ex)
             {
-                foreach(var x in ex.InnerExceptions)
+                foreach (var x in ex.InnerExceptions)
                 {
-                    Console.WriteLine(x.ToString());
+                    loger.WriteLog(x.ToString());
                 }
-                                     
-                Console.ReadKey();
+                             
             }
         }
     }

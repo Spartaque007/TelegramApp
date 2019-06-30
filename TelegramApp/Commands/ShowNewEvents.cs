@@ -1,6 +1,5 @@
 ﻿using DevBy;
 using System.Collections.Generic;
-using System.Linq;
 using Telegram;
 using TelegramApp.Dependency;
 using TelegramApp.Views;
@@ -13,8 +12,9 @@ namespace TelegramApp.Commands
         {
             DevByParser parser = new DevByParser();
             List<Event> currEvents = parser.GetEvents(2);
-            List<Event> prevrEvents = storage.GetEventsFromStorageForUser(result.message.from.ID.ToString()) ?? new List<Event>();
-            List<Event> newEvents = currEvents.Except(prevrEvents).ToList<Event>();
+            storage.SaveNewEventsToStorage(currEvents);
+            storage.SaveUserCheckDate(result.message.from.ID.ToString());
+            List<Event> newEvents = storage.GetNewEventsFromStorageForUser(result.message.from.ID.ToString());
 
             if (newEvents.Capacity > 0)
             {
@@ -22,13 +22,11 @@ namespace TelegramApp.Commands
                 {
                     bot.SendMessageMDCustom(viewer.ToMdFormat(sub), result.message.chat.Id);
                 }
-                storage.SaveEventsToStorage(result.message.from.ID.ToString(), currEvents);
             }
             else
             {
                 bot.SendMessageMDCustom($"*No new events for you, {result.message.from.first_name}!*", result.message.chat.Id);
             }
-
         }
     }
 }

@@ -8,7 +8,7 @@ namespace WorkWithFiles
 {
     public static class LocalFile
     {
-        public static string Dir { get; } = $@"{ConfigurationManager.AppSettings.Get("DefaultDir") ?? "."}";
+        private static string Dir { get; } = $@"{ConfigurationManager.AppSettings.Get("DefaultDir") ?? "."}";
 
         public static bool CheckUsersFolder()
         {
@@ -23,7 +23,7 @@ namespace WorkWithFiles
             }
         }
 
-        public static bool CheckPathFile(string name)
+        private static bool CheckPathFile(string name)
         {
             CheckUsersFolder();
             try
@@ -50,7 +50,7 @@ namespace WorkWithFiles
             }
             else
             {
-                return " ";
+                return "";
             }
         }
 

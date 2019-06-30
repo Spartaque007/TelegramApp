@@ -8,7 +8,7 @@ namespace DevBy
         private string date;
         private string name;
         private string eventURL;
-        
+
         public string EventDate
         {
             get
