@@ -76,9 +76,7 @@ namespace DevBy
                     return true;
                 }
             }
-
             return false;
-
         }
         public override int GetHashCode()
         {

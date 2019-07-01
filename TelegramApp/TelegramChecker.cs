@@ -16,8 +16,8 @@ namespace TelegramApp
         private IStorage storage;
         private TelegramBot telegramBot;
         private EventViews viewer;
-        private ILoger loger;
-        public TelegramChecker(ref IStorage storage, ref TelegramBot bot, ref EventViews viewer, ref ILoger loger)
+        private ILogger loger;
+        public TelegramChecker(ref IStorage storage, ref TelegramBot bot, ref EventViews viewer, ref ILogger loger)
         {
             this.storage = storage;
             this.telegramBot = bot;
@@ -29,7 +29,7 @@ namespace TelegramApp
         {
             try
             {
-                Timer timer = new Timer(600000);
+                Timer timer = new Timer(6000);
                 timer.AutoReset = true;
                 bool timerFlag = false;
                 timer.Elapsed += (x, y) => timerFlag = true;

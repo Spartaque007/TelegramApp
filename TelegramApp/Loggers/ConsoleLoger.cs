@@ -7,7 +7,7 @@ using TelegramApp.Dependency;
 
 namespace TelegramApp.Logers
 {
-    class ConsoleLoger : ILoger
+    class ConsoleLoger : ILogger
     {
         public ConsoleLoger()
         {

@@ -1,10 +1,4 @@
-﻿using DevBy;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Net.Http;
-using Telegram;
-using TelegramApp.Commands;
+﻿using TelegramApp.Commands;
 using TelegramApp.Dependency;
 
 namespace TelegramApp
@@ -13,23 +7,22 @@ namespace TelegramApp
     {
         public ICommand GetCommandFromMessage(string message)
         {
-            
-            if (message.ToUpper().Contains("@JONNWICKBOT"))
+            if (message != null)
             {
-                switch ($@"{message.ToUpper()}")
+                if (message.ToUpper().Contains("@JONNWICKBOT"))
                 {
-                   
-                    case @"/SHOWEVENTS@JONNWICKBOT":
-                        return new ShowAllEvents();
+                    switch ($@"{message.ToUpper()}")
+                    {
+                        case @"/SHOWEVENTS@JONNWICKBOT":
+                            return new ShowAllEvents();
 
-                    case @"/SHOWNEWEVENTS@JONNWICKBOT":
-                        return  new ShowNewEvents();
-
+                        case @"/SHOWNEWEVENTS@JONNWICKBOT":
+                            return new ShowNewEvents();
+                    }
                 }
-               
+                return new DafaultCommand();
             }
-            return new DafaultCommand();
+            return new EmptyCommand();
         }
-
     }
 }
