@@ -6,13 +6,10 @@ namespace TelegramApp.Storages.DdModels
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("UsersList")]
-    public partial class User
+    public partial class Update
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int UserID { get; set; }
-
-        public DateTime LastUpdate { get; set; }
+        public int LastUpdate { get; set; }
     }
 }

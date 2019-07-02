@@ -13,7 +13,7 @@ namespace TelegramApp.Commands
             DevByParser parser = new DevByParser();
             List<Event> currEvents = parser.GetEvents(2);
             storage.SaveNewEventsToStorage(currEvents);
-            storage.SaveUserCheckDate(result.message.from.ID.ToString());
+            storage.SaveUserCheckDate(result.message.from.ID);
             foreach (var sub in currEvents)
             {
                 bot.SendMessageMDCustom(viewer.ToMdFormat(sub),result.message.chat.Id);

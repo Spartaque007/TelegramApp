@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using TelegramApp.Dependency;
-using TelegramApp.StorageClasses.DdModels;
+using TelegramApp.Storages.DdModels;
 using WorkWithFiles;
 
 namespace TelegramApp
@@ -19,9 +19,9 @@ namespace TelegramApp
         {
             return LocalFile.GetDataFromFile(updatesFile).Result ?? "0";
         }
-        public void SaveTelegramUpdateToStorage(string update)
+        public void SaveTelegramUpdateToStorage(int update)
         {
-            LocalFile.SaveTextToFile(updatesFile, update);
+            LocalFile.SaveTextToFile(updatesFile, update.ToString());
         }
         public void SaveNewEventsToStorage(List<Event> CurrEvents)
         {
@@ -35,7 +35,7 @@ namespace TelegramApp
             string eventsToStorageText = JsonConvert.SerializeObject(eventsFromStorage);
             LocalFile.SaveTextToFile(eventsFile, eventsToStorageText);
         }
-        public List<Event> GetNewEventsFromStorageForUser(string userID)
+        public List<Event> GetNewEventsFromStorageForUser(int userID)
         {
             string eventsText = LocalFile.GetDataFromFile(eventsFile).Result;
             List<Event> events = JsonConvert.DeserializeObject<List<Event>>(eventsText);
@@ -47,7 +47,7 @@ namespace TelegramApp
             return newEvents;
 
         }
-        private DateTime GetUserLastCheckDateAndSaveCurrentDate(string userId)
+        private DateTime GetUserLastCheckDateAndSaveCurrentDate(int userId)
         {
             string allUsersText = LocalFile.GetDataFromFile(usersFile).Result;
             List<User> allUsers = JsonConvert.DeserializeObject<List<User>>(allUsersText) ?? new List<User>();
@@ -55,19 +55,19 @@ namespace TelegramApp
             DateTime lastCheckDate;
             if (indexOfUser < 0)
             {
-                allUsers.Add(new User { UserID = userId, LustUpdate = DateTime.Now });
+                allUsers.Add(new User { UserID = userId, LastUpdate = DateTime.Now });
                 lastCheckDate = default;
             }
             else
             {
-                lastCheckDate = allUsers[indexOfUser].LustUpdate;
-                allUsers[indexOfUser].LustUpdate = DateTime.Now;
+                lastCheckDate = allUsers[indexOfUser].LastUpdate;
+                allUsers[indexOfUser].LastUpdate = DateTime.Now;
             }
             allUsersText = JsonConvert.SerializeObject(allUsers);
             LocalFile.SaveTextToFile(usersFile, allUsersText);
             return lastCheckDate;
         }
-        public void SaveUserCheckDate(string userId)
+        public void SaveUserCheckDate(int userId)
         {
             GetUserLastCheckDateAndSaveCurrentDate(userId);
         }

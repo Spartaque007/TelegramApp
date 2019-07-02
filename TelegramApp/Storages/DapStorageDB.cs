@@ -22,7 +22,7 @@ namespace TelegramApp.StorageClasses
             this.connectionString = connectionString;
             CheckDatabase();
         }
-        public List<Event> GetNewEventsFromStorageForUser(string userId)
+        public List<Event> GetNewEventsFromStorageForUser(int userId)
         {
             CheckUserInDb(userId);
             using (IDbConnection db = new SqlConnection(connectionString))
@@ -84,7 +84,7 @@ namespace TelegramApp.StorageClasses
                 }
             }
         }
-        public void SaveTelegramUpdateToStorage(string update)
+        public void SaveTelegramUpdateToStorage(int update)
         {
 
             using (IDbConnection db = new SqlConnection(connectionString))
@@ -157,7 +157,7 @@ namespace TelegramApp.StorageClasses
                 }
             }
         }
-        public void CheckUserInDb(string userID)
+        public void CheckUserInDb(int userID)
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
@@ -170,7 +170,7 @@ namespace TelegramApp.StorageClasses
                 }
             }
         }
-        public void SaveUserCheckDate(string userId)
+        public void SaveUserCheckDate(int userId)
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {

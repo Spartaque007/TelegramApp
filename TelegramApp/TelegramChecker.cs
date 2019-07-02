@@ -49,14 +49,14 @@ namespace TelegramApp
                             operation.GetCommandFromMessage(result.message.text).ExecuteCommand(result, ref storage, ref telegramBot, ref viewer);
                         }
                         int MaxUpdate = ResponseFromTelegram.result.Max(X => X.update_id);
-                        storage.SaveTelegramUpdateToStorage((MaxUpdate + 1).ToString());
+                        storage.SaveTelegramUpdateToStorage((MaxUpdate + 1));
                     }
                     if (timerFlag)
                     {
                         DevByParser parser = new DevByParser();
                         List<Event> currEvents = parser.GetEvents(2);
                         storage.SaveNewEventsToStorage(currEvents);
-                        List<Event> newEvents = storage.GetNewEventsFromStorageForUser("0");
+                        List<Event> newEvents = storage.GetNewEventsFromStorageForUser(0);
                         if (newEvents.Count > 0)
                         {
                             foreach (var @event in newEvents)
