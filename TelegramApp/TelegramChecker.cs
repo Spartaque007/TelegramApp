@@ -17,7 +17,7 @@ namespace TelegramApp
         private TelegramBot telegramBot;
         private EventViews viewer;
         private ILogger loger;
-        public TelegramChecker(ref IStorage storage, ref TelegramBot bot, ref EventViews viewer, ref ILogger loger)
+        public TelegramChecker(IStorage storage, TelegramBot bot, EventViews viewer, ILogger loger)
         {
             this.storage = storage;
             this.telegramBot = bot;
@@ -46,8 +46,9 @@ namespace TelegramApp
                         {
                             loger.WriteLog($"Message from {result.message.from.username}\n" +
                                 $"Message Text {result.message.text} \n{DateTime.Now.ToShortTimeString()}");
-                            operation.GetCommandFromMessage(result.message.text).ExecuteCommand(result, ref storage, ref telegramBot, ref viewer);
+                            operation.GetCommandFromMessage(result.message.text).ExecuteCommand(result, storage, telegramBot, viewer);
                         }
+
                         int MaxUpdate = ResponseFromTelegram.result.Max(X => X.update_id);
                         storage.SaveTelegramUpdateToStorage((MaxUpdate + 1));
                     }

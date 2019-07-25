@@ -4,9 +4,9 @@ using TelegramApp.Views;
 
 namespace TelegramApp.Commands
 {
-    public class DafaultCommand : ICommand
+    public class DefaultCommand : ICommand
     {
-        public void ExecuteCommand(Result result, ref IStorage storage, ref TelegramBot bot, ref EventViews viewer)
+        public void ExecuteCommand(Result result,  IStorage storage,  TelegramBot bot,  EventViews viewer)
         {
             string message = $"Dear {result.message.from.first_name}, you entered unknown command!\nPlease Chose command from list:\n" +
                 $"/ShowEvents@JonnWickbot -show all events\n" +

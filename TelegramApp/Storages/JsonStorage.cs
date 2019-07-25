@@ -15,9 +15,10 @@ namespace TelegramApp
         private string updatesFile = ConfigurationManager.AppSettings["ChatUpdatesFileName"];
         private string eventsFile = "Events";
         private string usersFile = "Users";
-        public string GetLastUpdateTelegramFromStorage()
+        public int GetLastUpdateTelegramFromStorage()
         {
-            return LocalFile.GetDataFromFile(updatesFile).Result ?? "0";
+            string lastUpd = LocalFile.GetDataFromFile(updatesFile).Result ?? "0";
+            return int.Parse(lastUpd);
         }
         public void SaveTelegramUpdateToStorage(int update)
         {
@@ -41,8 +42,8 @@ namespace TelegramApp
             List<Event> events = JsonConvert.DeserializeObject<List<Event>>(eventsText);
             DateTime lastCheckDate = GetUserLastCheckDateAndSaveCurrentDate(userID);
             List<Event> newEvents = (from e in events
-                                     where DateTime.Parse(e.EventAddDate) > lastCheckDate
-                                     orderby DateTime.Parse(e.EventAddDate)
+                                     where e.EventAddDate > lastCheckDate
+                                     orderby e.EventAddDate
                                      select e).ToList();
             return newEvents;
 

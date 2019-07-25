@@ -1,14 +1,25 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevBy
 {
     [Serializable]
+    [Table("EventList")]
     public class Event
     {
+
         private string date;
         private string name;
         private string eventURL;
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int EventId { get; set; }
+
+        
+        [Column("EventDate")]
+        [StringLength(100)]
         public string EventDate
         {
             get
@@ -21,6 +32,9 @@ namespace DevBy
                 else date = "No date";
             }
         }
+
+        [Column("EventName")]
+        [StringLength(250)]
         public string EventName
         {
             get
@@ -34,7 +48,10 @@ namespace DevBy
                 else name = "No name";
             }
         }
-        public string EventURL
+
+        [Column("EventLink")]
+        [StringLength(256)]
+        public string EventLink
         {
             get
             {
@@ -47,7 +64,9 @@ namespace DevBy
             }
 
         }
-        public string EventAddDate { get; set; } = DateTime.Now.ToString();
+
+        [Column("EventAddDate")]
+        public DateTime EventAddDate { get; set; } = DateTime.Now;
         public Event()
         {
             EventName = "No name";
@@ -58,7 +77,7 @@ namespace DevBy
         {
             EventName = Name;
             EventDate = Date;
-            EventURL = URL;
+            EventLink = URL;
         }
 
         public override string ToString()

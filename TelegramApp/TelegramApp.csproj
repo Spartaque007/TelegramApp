@@ -65,12 +65,12 @@
     <Compile Include="Commands\EmptyCommand.cs" />
     <Compile Include="Loggers\ConsoleLoger.cs" />
     <Compile Include="Storages\DapStorageDB.cs" />
+    <Compile Include="Storages\DbStorage.cs" />
     <Compile Include="Storages\DdModels\TelegramContext.cs" />
-    <Compile Include="Storages\DdModels\EventList.cs" />
     <Compile Include="Storages\DdModels\Update.cs" />
     <Compile Include="Storages\DdModels\User.cs" />
     <Compile Include="TelegramChecker.cs" />
-    <Compile Include="Commands\DafaultCommand.cs" />
+    <Compile Include="Commands\DefaultCommand.cs" />
     <Compile Include="Commands\ShowAllEvents.cs" />
     <Compile Include="Commands\ShowNewEvents.cs" />
     <Compile Include="Dependency\ICommand.cs" />

@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Updates.cs" />
     <Compile Include="TelegramBot.cs" />
     <Compile Include="Models\Chat.cs" />
     <Compile Include="Models\Message.cs" />

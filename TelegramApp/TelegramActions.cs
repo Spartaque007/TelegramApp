@@ -20,7 +20,7 @@ namespace TelegramApp
                             return new ShowNewEvents();
                     }
                 }
-                return new DafaultCommand();
+                return new DefaultCommand();
             }
             return new EmptyCommand();
         }

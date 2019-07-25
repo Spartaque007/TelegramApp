@@ -33,7 +33,7 @@ namespace DevBy
                     HtmlNode UrlNode = nodes[j].SelectSingleNode(".//a[@class='title']");
                     string url = UrlNode.GetAttributeValue("href", null);
                     string name = UrlNode.InnerText;
-                    meetings.Add(new Event { EventName = name, EventURL = "https://events.dev.by" + url, EventDate = date });
+                    meetings.Add(new Event { EventName = name, EventLink = "https://events.dev.by" + url, EventDate = date });
                 }
             }
             return meetings;

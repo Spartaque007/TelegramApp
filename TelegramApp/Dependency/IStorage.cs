@@ -7,7 +7,7 @@ namespace TelegramApp.Dependency
     {
         void SaveNewEventsToStorage( List<Event> CurrEvents);
         List<Event> GetNewEventsFromStorageForUser(int userID);
-        string GetLastUpdateTelegramFromStorage();
+        int GetLastUpdateTelegramFromStorage();
         void SaveTelegramUpdateToStorage(int update);
         void SaveUserCheckDate(int userId);
     }

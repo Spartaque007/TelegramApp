@@ -5,9 +5,9 @@ using TelegramApp.Views;
 
 namespace TelegramApp.Commands
 {
-    class EmptyCommand : ICommand
+    public class EmptyCommand : ICommand
     {
-        public void ExecuteCommand(Result result, ref IStorage storage, ref TelegramBot bot, ref EventViews views)
+        public void ExecuteCommand(Result result, IStorage storage, TelegramBot bot, EventViews views)
         {
             
         }

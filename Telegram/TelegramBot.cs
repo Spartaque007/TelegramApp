@@ -27,7 +27,7 @@ namespace Telegram
 
             return a;
         }
-        public TelegramResponse GetUpdate(string updateID)
+        public TelegramResponse GetUpdate(int updateID)
         {
             string b = client.GetStringAsync($"{Token}/getUpdates?offset={updateID}?message&timeout=120").Result;
             return JsonConvert.DeserializeObject<TelegramResponse>(b);

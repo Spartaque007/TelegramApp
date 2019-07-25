@@ -7,7 +7,7 @@ namespace TelegramApp.Views
         public string ToMdFormat(Event @event)
         {
             return $@"*{@event.EventDate}*
-[{@event.EventName}]({@event.EventURL})";
+[{@event.EventName}]({@event.EventLink})";
         }
     }
 }

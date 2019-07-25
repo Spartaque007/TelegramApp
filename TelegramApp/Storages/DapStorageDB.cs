@@ -59,21 +59,21 @@ namespace TelegramApp.StorageClasses
                     foreach (var e in newEvents)
                     {
                         string sqlInsertQuery = $@"Insert into {eventsTableName} (EventName, EventDate, EventLink)
-                                         values (N'{e.EventName}',N'{e.EventDate}','{e.EventURL}')";
+                                         values (N'{e.EventName}',N'{e.EventDate}','{e.EventLink}')";
                         db.Execute(sqlInsertQuery);
                     }
                 }
             }
         }
-        public string GetLastUpdateTelegramFromStorage()
+        public int GetLastUpdateTelegramFromStorage()
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
                 string sqlQuery = $"Select top 1 * from {updatesTableName} ";
-                string update = db.Query<string>(sqlQuery).FirstOrDefault();
-                if (update == null)
+                int update = db.Query<int>(sqlQuery).FirstOrDefault();
+                if (update == 0)
                 {
-                    string defaultUpdateValue = "0";
+                    int defaultUpdateValue = 0;
                     sqlQuery = $"Insert into {updatesTableName} (LastUpdate) values ('{defaultUpdateValue}')";
                     db.Execute(sqlQuery);
                     return defaultUpdateValue;

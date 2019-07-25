@@ -6,9 +6,9 @@ using TelegramApp.Views;
 
 namespace TelegramApp.Commands
 {
-    class ShowAllEvents : ICommand
+    public class ShowAllEvents : ICommand
     {
-        public void ExecuteCommand(Result result, ref IStorage storage, ref TelegramBot bot, ref EventViews viewer)
+        public void ExecuteCommand(Result result, IStorage storage,  TelegramBot bot,  EventViews viewer)
         {
             DevByParser parser = new DevByParser();
             List<Event> currEvents = parser.GetEvents(2);

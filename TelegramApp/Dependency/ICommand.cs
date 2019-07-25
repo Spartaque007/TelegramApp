@@ -5,6 +5,6 @@ namespace TelegramApp.Dependency
 {
     public interface ICommand
     {
-        void ExecuteCommand(Result result, ref IStorage storage, ref TelegramBot bot, ref EventViews views);
+        void ExecuteCommand(Result result, IStorage storage, TelegramBot bot, EventViews views);
     }
 }
